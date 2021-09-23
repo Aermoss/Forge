@@ -1,0 +1,2 @@
+Rect = "Rect"
+Circle = "Circle"
