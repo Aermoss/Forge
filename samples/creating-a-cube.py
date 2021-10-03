@@ -19,4 +19,4 @@ cube = Cube()
 
 while True:
     cube.draw()
-    forge.run()
+    forge.update()

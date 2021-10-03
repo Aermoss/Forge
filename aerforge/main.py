@@ -4,12 +4,14 @@ from aerforge.input import *
 from aerforge.error import *
 
 class Forge:
-    def __init__(self, width = 1200, height = 600, fps = 60):
+    def __init__(self, width = 1200, height = 600, fullscreen = False, fps = 60):
         self.width = width
         self.height = height
         self.fps = fps
 
         pygame.init()
+
+        self.destroyed = False
 
         self.clock = pygame.time.Clock()
         self.last_time = time.time()
@@ -17,7 +19,11 @@ class Forge:
 
         path = os.path.dirname(os.path.abspath(__file__))
 
-        self.window = pygame.display.set_mode((self.width, self.height))
+        if fullscreen:
+            self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
+        else:
+            self.window = pygame.display.set_mode((self.width, self.height))
+
         self.window.fill((20, 20, 20))
 
         icon = os.path.join(path, "./assets/icon/icon.png")
@@ -85,18 +91,16 @@ class Forge:
             "SPACE" : pygame.K_SPACE, "PLUS" : pygame.K_PLUS,
         }
 
-        self.mouse_buttons = {
+        self.buttons = {
             "LEFT" : 0, "MIDDLE" : 1, "RIGHT" : 2
         }
 
-    def run(self):
+    def update(self):
         pygame.display.flip()
         self.clock.tick(self.fps)
 
-        pygame.display.update()
-
         self.dt = time.time() - self.last_time
-        self.dt *= self.fps
+        self.dt = self.dt * self.fps
         self.last_time = time.time()
 
         self.input.update()
@@ -106,7 +110,16 @@ class Forge:
                 pygame.quit()
                 quit()
 
-        if self.input.key_pressed(self.keys["F5"]):
-            os.execl(sys.executable, sys.executable, *sys.argv)
+        pygame.display.update()
 
         self.window.fill((20, 20, 20))
+
+        if self.destroyed:
+            pygame.quit()
+            quit()
+
+    def destroy(self):
+        self.destroyed = True
+
+    def get_fps(self):
+        return self.clock.get_fps()

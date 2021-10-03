@@ -17,7 +17,7 @@ from aerforge import *
 forge = Forge()
 
 while True:
-    forge.run()
+    forge.update()
 ```
 
 # Creating a cube
@@ -43,5 +43,5 @@ cube = Cube()
 
 while True:
     cube.draw()
-    forge.run()
+    forge.update()
 ```

@@ -2,23 +2,25 @@ import pygame
 
 from aerforge.error import *
 
-class Sprite:
-    def __init__(self, window, image, x, y, weight = 200, height = 200):
-        self.image = pygame.image.load(image)
-
-        if weight != None and height != None:
-            self.image = pygame.transform.scale(self.image, (height, weight))
-
+class Sprite(pygame.Rect):
+    def __init__(self, window, image, x = 0, y = 0, width = 200, height = 200):
         self.window = window
+
         self.x = x
         self.y = y
-        self.weight = weight
+
+        self.width = width
         self.height = height
-        self.rect = pygame.Rect(0, 0, 0, 0)
+
+        self.image = image
+        self.loaded_image = pygame.image.load(self.image)
+
+        self.destroyed = False
 
     def draw(self):
-        self.rect = pygame.Rect(self.x, self.y, self.weight, self.height)
-        self.window.window.blit(self.image, (self.x, self.y))
+        if not self.destroyed:
+            self.loaded_image = pygame.transform.scale(self.loaded_image, (self.width, self.height))
+            self.window.window.blit(self.loaded_image, (self.x, self.y))
 
     def get_width(self):
         return self.image.get_width()
@@ -35,3 +37,16 @@ class Sprite:
 
     def center_y(self):
         self.y = self.window.height / 2 - self.height / 2
+
+    def hit(self, gameobject):
+        if isinstance(gameobject, pygame.Rect):
+            return self.colliderect(gameobject)
+
+        elif isinstance(gameobject, tuple):
+            return self.collidepoint(gameobject)
+
+        else:
+            raise ForgeError("Invalid type")
+
+    def destroy(self):
+        self.destroyed = True
