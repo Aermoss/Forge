@@ -3,7 +3,7 @@ import pygame
 from aerforge.error import *
 
 class Sprite(pygame.Rect):
-    def __init__(self, window, image, x = 0, y = 0, width = 200, height = 200):
+    def __init__(self, window, image, x = 0, y = 0, width = 200, height = 200, add_to_objects = True):
         self.window = window
 
         self.x = x
@@ -16,6 +16,11 @@ class Sprite(pygame.Rect):
         self.loaded_image = pygame.image.load(self.image)
 
         self.destroyed = False
+
+        self.add_to_objects = add_to_objects
+
+        if self.add_to_objects:
+            self.window.objects.append(self)
 
     def draw(self):
         if not self.destroyed:
@@ -37,6 +42,9 @@ class Sprite(pygame.Rect):
 
     def center_y(self):
         self.y = self.window.height / 2 - self.height / 2
+
+    def resize(self, size):
+        self.image = pygame.transform.scale(self.image, size)
 
     def hit(self, gameobject):
         if isinstance(gameobject, pygame.Rect):

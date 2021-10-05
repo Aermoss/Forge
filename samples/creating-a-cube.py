@@ -18,5 +18,5 @@ class Cube(GameObject):
 cube = Cube()
 
 while True:
-    cube.draw()
+    forge.drawall()
     forge.update()

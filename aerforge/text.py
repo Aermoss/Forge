@@ -1,7 +1,9 @@
 import pygame
 
+from aerforge.color import *
+
 class Text:
-    def __init__(self, window, text, font_size = 24, file = None, color = (240, 240, 240), x = 0, y = 0):
+    def __init__(self, window, text, font_size = 24, file = None, color = WHITE, x = 0, y = 0, add_to_objects = True):
         self.window = window
 
         self.x = x
@@ -9,12 +11,17 @@ class Text:
 
         self.file = file
         self.font_size = font_size
-        self.font = pygame.font.SysFont(self.file, self.font_size)
+        self.font = pygame.font.Font(self.file, self.font_size)
         
         self.color = color
         self.text = text
 
         self.destroyed = False
+
+        self.add_to_objects = add_to_objects
+
+        if self.add_to_objects:
+            self.window.objects.append(self)
 
     def draw(self):
         if not self.destroyed:

@@ -1,10 +1,9 @@
 import pygame
 
-from aerforge.error import *
-from aerforge.shape import *
+from aerforge import *
 
 class GameObject(pygame.Rect):
-    def __init__(self, window, shape = "rect", width = 20, height = 20, x = 0, y = 0, color = "white"):
+    def __init__(self, window, shape = Rect, width = 50, height = 50, x = 0, y = 0, color = WHITE, add_to_objects = True):
         self.window = window
 
         self.width = width
@@ -12,12 +11,16 @@ class GameObject(pygame.Rect):
 
         self.x = x
         self.y = y
-        self.position = (self.x, self.y)
 
         self.shape = shape
         self.color = color
 
         self.destroyed = False
+
+        self.add_to_objects = add_to_objects
+
+        if self.add_to_objects:
+            self.window.objects.append(self)
 
     def draw(self):
         if not self.destroyed:

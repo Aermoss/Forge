@@ -1,7 +1,9 @@
 import pygame, time, os, sys
 
+from aerforge.camera import *
 from aerforge.input import *
 from aerforge.error import *
+from aerforge.color import *
 
 class Forge:
     def __init__(self, width = 1200, height = 600, fullscreen = False, fps = 60):
@@ -15,7 +17,7 @@ class Forge:
 
         self.clock = pygame.time.Clock()
         self.last_time = time.time()
-        self.delta_time = 0
+        self.dt = 0
 
         path = os.path.dirname(os.path.abspath(__file__))
 
@@ -95,6 +97,8 @@ class Forge:
             "LEFT" : 0, "MIDDLE" : 1, "RIGHT" : 2
         }
 
+        self.objects = []
+
     def update(self):
         pygame.display.flip()
         self.clock.tick(self.fps)
@@ -123,3 +127,11 @@ class Forge:
 
     def get_fps(self):
         return self.clock.get_fps()
+
+    def drawall(self):
+        for i in self.objects:
+            i.draw()
+
+    def destroyall(self):
+        for i in self.objects:
+            i.destroy()

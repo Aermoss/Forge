@@ -5,7 +5,7 @@ with open("README.md", "r", encoding = "UTF-8") as file:
  
 setup(
     name = "aerforge",
-    version = "0.0.3",
+    version = "0.0.4",
     description = "A game engine made with SDL.",
     long_description = long_desc,
     long_description_content_type = "text/markdown",
