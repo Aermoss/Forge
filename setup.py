@@ -5,7 +5,7 @@ with open("README.md", "r", encoding = "UTF-8") as file:
  
 setup(
     name = "aerforge",
-    version = "0.0.4",
+    version = "0.0.5",
     description = "A game engine made with SDL.",
     long_description = long_desc,
     long_description_content_type = "text/markdown",
@@ -16,5 +16,5 @@ setup(
     keywords = "game engine",
     packages = find_packages(),
     include_package_data = True,
-    install_requires = [""]
+    install_requires = ["pygame"]
 )

@@ -3,7 +3,7 @@ import pygame
 from aerforge import *
 
 class GameObject(pygame.Rect):
-    def __init__(self, window, shape = Rect, width = 50, height = 50, x = 0, y = 0, color = WHITE, add_to_objects = True):
+    def __init__(self, window, shape = Rect, width = 50, height = 50, x = 0, y = 0, color = WHITE, points = [], add_to_objects = True):
         self.window = window
 
         self.width = width
@@ -14,6 +14,8 @@ class GameObject(pygame.Rect):
 
         self.shape = shape
         self.color = color
+
+        self.points = points
 
         self.destroyed = False
 
@@ -29,6 +31,9 @@ class GameObject(pygame.Rect):
 
             elif self.shape == Circle:
                 pygame.draw.ellipse(self.window.window, self.color, self)
+
+            elif self.shape == Polygon:
+                pygame.draw.polygon(self.window.window, self.color, self.points)
 
             else:
                 raise ForgeError("Invalid shape")

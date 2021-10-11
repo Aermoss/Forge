@@ -4,6 +4,7 @@ from aerforge.camera import *
 from aerforge.input import *
 from aerforge.error import *
 from aerforge.color import *
+from aerforge.shape import *
 
 class Forge:
     def __init__(self, width = 1200, height = 600, fullscreen = False, fps = 60):
@@ -23,6 +24,7 @@ class Forge:
 
         if fullscreen:
             self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
+
         else:
             self.window = pygame.display.set_mode((self.width, self.height))
 
@@ -60,37 +62,22 @@ class Forge:
             "F4" : pygame.K_F4, "F5" : pygame.K_F5, "F6" : pygame.K_F6,
             "F7" : pygame.K_F7, "F8" : pygame.K_F8, "F9" : pygame.K_F9,
             "F10" : pygame.K_F10, "F11" : pygame.K_F11, "F12" : pygame.K_F12,
-            "F13" : pygame.K_F13, "F14" : pygame.K_F14, "F15" : pygame.K_F15,
-
-            "SCAN_F1" : pygame.KSCAN_F1, "SCAN_F2" : pygame.KSCAN_F2, 
-            "SCAN_F3" : pygame.KSCAN_F3, "SCAN_F4" : pygame.KSCAN_F4, 
-            "SCAN_F5" : pygame.KSCAN_F5, "SCAN_F6" : pygame.KSCAN_F6,
-            "SCAN_F7" : pygame.KSCAN_F7, "SCAN_F8" : pygame.KSCAN_F8, 
-            "SCAN_F9" : pygame.KSCAN_F9, "SCAN_F10" : pygame.KSCAN_F10, 
-            "SCAN_F11" : pygame.KSCAN_F11, "SCAN_F12" : pygame.KSCAN_F12,
-            "SCAN_F13" : pygame.KSCAN_F13, "SCAN_F14" : pygame.KSCAN_F14, 
-            "SCAN_F15" : pygame.KSCAN_F15,
 
             "LCTRL" : pygame.K_LCTRL, "RCTRL" : pygame.K_RCTRL,
             "LSHIFT" : pygame.K_LSHIFT, "RSHIFT" : pygame.K_RSHIFT,
             "LALT" : pygame.K_LALT, "RALT" : pygame.K_RALT,
-            "LSUPER":  pygame.K_LSUPER, "RSUPER" : pygame.K_RSUPER,
 
-            "MOD_CTRL" : pygame.KMOD_CTRL, "MOD_ALT" : pygame.KMOD_ALT,
-            "MOD_CAPS" : pygame.KMOD_CAPS, "MOD_GUI" : pygame.KMOD_GUI,
-            "MOD_LALT" : pygame.KMOD_LALT, "MOD_LCTRL" : pygame.KMOD_LCTRL,
-            "MOD_LGUI" : pygame.KMOD_LGUI, "MOD_LMETA" : pygame.KMOD_LMETA,
-            "MOD_LSHIFT" : pygame.KMOD_LSHIFT, "MOD_META" : pygame.KMOD_META,
-            "MOD_NONE" : pygame.KMOD_NONE, "MOD_MODE" : pygame.KMOD_MODE,
-            "MOD_NUM" : pygame.KMOD_NUM, "MOD_RALT" : pygame.KMOD_RALT,
-            "MOD_RSHIFT" : pygame.KMOD_RSHIFT, "MOD_RCTRL" : pygame.KMOD_RCTRL,
-            "MOD_RMETA" : pygame.KMOD_RMETA, "MOD_RGUI" : pygame.KMOD_RGUI,
-            "MOD_SHIFT" : pygame.KMOD_SHIFT, "MODE" : pygame.K_MODE,
-            "SCAN_MODE" : pygame.KSCAN_MODE,
+            "TAB" : pygame.K_TAB, "CAPSLOCK" : pygame.K_CAPSLOCK,
 
-            "HOME" : pygame.K_HOME, "INSERT" : pygame.K_INSERT,
-            "DELETE" : pygame.K_DELETE, "RETURN" : pygame.K_RETURN,
-            "SPACE" : pygame.K_SPACE, "PLUS" : pygame.K_PLUS,
+            "HOME" : pygame.K_HOME, "END" : pygame.K_END,
+            "INSERT" : pygame.K_INSERT, "DELETE" : pygame.K_DELETE, 
+
+            "RETURN" : pygame.K_RETURN, "BACKSPACE" : pygame.K_BACKSPACE, 
+            "SPACE" : pygame.K_SPACE, 
+
+            "PLUS" : pygame.K_PLUS, "MINUS" : pygame.K_MINUS, 
+            "SLASH" : pygame.K_SLASH, "BACKSLASH" : pygame.K_BACKSLASH,
+            "ASTERISK" : pygame.K_ASTERISK, 
         }
 
         self.buttons = {
@@ -109,10 +96,30 @@ class Forge:
 
         self.input.update()
 
+        if self.input.key_press_bool:
+            self.input.pressed_key_name = ""
+            self.input.key_press_bool = False
+
+        if self.input.mouse_press_bool:
+            self.input.mouse_press_bool = False
+        
+        if self.input.mouse_motion_bool:
+            self.input.mouse_motion_bool = False
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
                 quit()
+
+            if event.type == pygame.KEYDOWN:
+                self.input.pressed_key_name = event.unicode
+                self.input.key_press_bool = True
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                self.input.mouse_press_bool = True
+
+            if event.type == pygame.MOUSEMOTION:
+                self.input.mouse_motion_bool = True
 
         pygame.display.update()
 
@@ -135,3 +142,28 @@ class Forge:
     def destroyall(self):
         for i in self.objects:
             i.destroy()
+
+    def set_mouse_lock(self, lock):
+        pygame.event.set_grab(lock)
+
+    def set_mouse_visible(self, visible):
+        pygame.mouse.set_visible(visible)
+
+    def set_mouse_pos(self, pos):
+        pygame.mouse.set_pos(pos)
+
+    def draw(self, shape = Rect, color = WHITE, x = 0, y = 0, width = 20, height = 20, points = [], start_x = 0, start_y = 0, end_x = 0, end_y = 0):
+        if shape == Rect:
+            pygame.draw.rect(self.window, color, (x, y, width, height))
+
+        elif shape == Circle:
+            pygame.draw.ellipse(self.window, color, (x, y, width, height))
+
+        elif shape == Polygon:
+            pygame.draw.polygon(self.window, color, points)
+
+        elif shape == Line:
+            pygame.draw.aaline(self.window, color, (start_x, start_y), (end_x, end_y))
+
+        else:
+            raise ForgeError("Invalid shape")

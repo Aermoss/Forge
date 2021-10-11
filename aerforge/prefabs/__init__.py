@@ -4,3 +4,6 @@ from aerforge.prefabs.top_view_controller import TopViewController
 from aerforge.prefabs.fps_counter import FpsCounter
 from aerforge.prefabs.tooltip import ToolTip
 from aerforge.prefabs.gravity import Gravity
+from aerforge.prefabs.gun import Gun
+from aerforge.prefabs.renderer_3d import Renderer3D
+from aerforge.prefabs.textbox import TextBox
