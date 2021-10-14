@@ -13,7 +13,7 @@ class Sprite(pygame.Rect):
         self.height = height
 
         self.image = image
-        self.loaded_image = pygame.image.load(self.image)
+        self.image = pygame.image.load(self.image)
 
         self.destroyed = False
 
@@ -24,8 +24,8 @@ class Sprite(pygame.Rect):
 
     def draw(self):
         if not self.destroyed:
-            self.loaded_image = pygame.transform.scale(self.loaded_image, (self.width, self.height))
-            self.window.window.blit(self.loaded_image, (self.x, self.y))
+            self.image = pygame.transform.scale(self.image, (self.width, self.height))
+            self.window.window.blit(self.image, (self.x, self.y))
 
     def get_width(self):
         return self.image.get_width()
@@ -58,3 +58,20 @@ class Sprite(pygame.Rect):
 
     def destroy(self):
         self.destroyed = True
+
+    def play_animation(self, animation, mirror_x = False, mirror_y = False):
+        animation.pos = animation.pos + animation.time
+
+        if animation.pos >= len(animation.frames):
+            animation.pos = 0
+
+        self.image = pygame.image.load(f"{animation.folder}/{animation.frames[int(animation.pos)]}")
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        
+        if mirror_x:
+            self.image = pygame.transform.flip(pygame.transform.scale(self.image, (self.width, self.height)), True, False)
+        
+        if mirror_y:
+            self.image = pygame.transform.flip(pygame.transform.scale(self.image, (self.width, self.height)), False, True)
+
+        self.draw()

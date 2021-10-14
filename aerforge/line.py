@@ -3,7 +3,7 @@ import pygame
 from aerforge import *
 
 class Line:
-    def __init__(self, window, start_x = 0, start_y = 0, end_x = 0, end_y = 0, color = WHITE, add_to_objects = True):
+    def __init__(self, window, start_x = 0, start_y = 0, end_x = 0, end_y = 0, color = Color(240, 240, 240), add_to_objects = True):
         self.window = window
         self.color = color
         self.start_x = start_x

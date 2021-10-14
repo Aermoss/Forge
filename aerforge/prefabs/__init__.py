@@ -7,3 +7,4 @@ from aerforge.prefabs.gravity import Gravity
 from aerforge.prefabs.gun import Gun
 from aerforge.prefabs.renderer_3d import Renderer3D
 from aerforge.prefabs.textbox import TextBox
+from aerforge.prefabs.draggable import Draggable

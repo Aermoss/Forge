@@ -3,7 +3,7 @@ import pygame
 from aerforge import *
 
 class GameObject(pygame.Rect):
-    def __init__(self, window, shape = Rect, width = 50, height = 50, x = 0, y = 0, color = WHITE, points = [], add_to_objects = True):
+    def __init__(self, window, shape = Rect, width = 50, height = 50, x = 0, y = 0, color = Color(240, 240, 240), points = [], add_to_objects = True):
         self.window = window
 
         self.width = width

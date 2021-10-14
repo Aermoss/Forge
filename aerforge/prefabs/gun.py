@@ -85,3 +85,19 @@ class Gun:
 
             else:
                 self.window.draw(shape = Rect, width = 10, height = 10, x = int(pos_x), y = int(pos_y))
+
+if __name__ == "__main__":
+    from aerforge.prefabs import *
+
+    forge = Forge()
+
+    player = TopViewController(forge)
+    player.center()
+
+    gun = Gun(forge, player)
+
+    while True:
+        player.update()
+        gun.update()
+        player.draw()
+        forge.update()

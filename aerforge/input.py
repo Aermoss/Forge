@@ -7,32 +7,42 @@ class Input:
         self.key = pygame.key.get_pressed()
         self.mouse = pygame.mouse.get_pressed()
 
-        self.pressed_key_name = ""
+        self._pressed_key = ""
 
-        self.key_press_bool = False
-        self.mouse_press_bool = False
-        self.mouse_motion_bool = False
+        self._key_pressed = False
+        self._mouse_pressed = False
+        self._mouse_motion = False
+
+        self._scroll_up = False
+        self._scroll_down = False
 
     def update(self):
         self.key = pygame.key.get_pressed()
         self.mouse = pygame.mouse.get_pressed()
 
-    def key_pressed(self, key = ""):
-        if key == "":
-            return self.key_press_bool
+    def key_pressed(self, key = None):
+        if key == None:
+            return self._key_pressed
 
         else:
             return self.key[key]
 
-    def mouse_pressed(self, button = ""):
-        if button == "":
-            return self.mouse_press_bool
+    def mouse_pressed(self, button = None):
+        if button == None:
+            return self._mouse_pressed
 
         else:
-            return self.mouse[button]
+            if button == 3:
+                return self._scroll_up
+
+            elif button == 4:
+                return self._scroll_down
+
+            else:
+                return self.mouse[button]
 
     def mouse_motion(self):
-        return self.mouse_motion_bool
+        return self._mouse_motion
 
     def mouse_pos(self):
         return pygame.mouse.get_pos()

@@ -3,7 +3,7 @@ import pygame
 from aerforge.color import *
 
 class Text:
-    def __init__(self, window, text, font_size = 24, file = None, color = WHITE, x = 0, y = 0, add_to_objects = True):
+    def __init__(self, window, text, font_size = 24, file = None, color = Color(240, 240, 240), x = 0, y = 0, add_to_objects = True):
         self.window = window
 
         self.x = x

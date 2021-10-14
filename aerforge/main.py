@@ -1,4 +1,6 @@
-import pygame, time, os, sys
+import pygame
+import time
+import os
 
 from aerforge.camera import *
 from aerforge.input import *
@@ -7,7 +9,7 @@ from aerforge.color import *
 from aerforge.shape import *
 
 class Forge:
-    def __init__(self, width = 1200, height = 600, fullscreen = False, fps = 60):
+    def __init__(self, width = 1200, height = 600, fullscreen = False, opengl = False, fps = 60):
         self.width = width
         self.height = height
         self.fps = fps
@@ -20,15 +22,26 @@ class Forge:
         self.last_time = time.time()
         self.dt = 0
 
+        self.fullscreen = fullscreen
+        self.opengl = opengl
+
         path = os.path.dirname(os.path.abspath(__file__))
 
-        if fullscreen:
-            self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
+        if self.fullscreen:
+            if self.opengl:
+                self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.OPENGL)
+            
+            else:
+                self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
 
         else:
-            self.window = pygame.display.set_mode((self.width, self.height))
+            if self.opengl:
+                self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL)
 
-        self.window.fill((20, 20, 20))
+            else:
+                self.window = pygame.display.set_mode((self.width, self.height))
+
+        self.window.fill(Color(20, 20, 20))
 
         icon = os.path.join(path, "./assets/icon/icon.png")
         icon = pygame.image.load(icon)
@@ -81,13 +94,19 @@ class Forge:
         }
 
         self.buttons = {
-            "LEFT" : 0, "MIDDLE" : 1, "RIGHT" : 2
+            "LEFT" : 0, "MIDDLE" : 1, "RIGHT" : 2,
+            "SCROLLUP" : 3, "SCROLLDOWN" : 4,
         }
 
         self.objects = []
 
     def update(self):
-        pygame.display.flip()
+        if self.opengl:
+            pygame.display.flip()
+
+        else:
+            pygame.display.update()
+
         self.clock.tick(self.fps)
 
         self.dt = time.time() - self.last_time
@@ -96,15 +115,21 @@ class Forge:
 
         self.input.update()
 
-        if self.input.key_press_bool:
-            self.input.pressed_key_name = ""
-            self.input.key_press_bool = False
+        if self.input._key_pressed:
+            self.input._pressed_key = ""
+            self.input._key_pressed = False
 
-        if self.input.mouse_press_bool:
-            self.input.mouse_press_bool = False
-        
-        if self.input.mouse_motion_bool:
-            self.input.mouse_motion_bool = False
+        if self.input._mouse_motion:
+            self.input._mouse_motion = False
+
+        if self.input._mouse_pressed:
+            self.input._mouse_pressed = False
+
+        if self.input._scroll_up:
+            self.input._scroll_up = False
+
+        if self.input._scroll_down:
+            self.input._scroll_down = False
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -112,16 +137,20 @@ class Forge:
                 quit()
 
             if event.type == pygame.KEYDOWN:
-                self.input.pressed_key_name = event.unicode
-                self.input.key_press_bool = True
+                self.input._pressed_key = event.unicode
+                self.input._key_pressed = True
 
-            if event.type == pygame.MOUSEBUTTONUP:
-                self.input.mouse_press_bool = True
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                self.input._mouse_pressed = True
+
+                if event.button == 4:
+                    self.input._scroll_up = True
+
+                if event.button == 5:
+                    self.input._scroll_down = True
 
             if event.type == pygame.MOUSEMOTION:
-                self.input.mouse_motion_bool = True
-
-        pygame.display.update()
+                self.input._mouse_motion = True
 
         self.window.fill((20, 20, 20))
 
@@ -152,7 +181,7 @@ class Forge:
     def set_mouse_pos(self, pos):
         pygame.mouse.set_pos(pos)
 
-    def draw(self, shape = Rect, color = WHITE, x = 0, y = 0, width = 20, height = 20, points = [], start_x = 0, start_y = 0, end_x = 0, end_y = 0):
+    def draw(self, shape = Rect, color = Color(240, 240, 240), x = 0, y = 0, width = 20, height = 20, points = [], start_x = 0, start_y = 0, end_x = 0, end_y = 0):
         if shape == Rect:
             pygame.draw.rect(self.window, color, (x, y, width, height))
 

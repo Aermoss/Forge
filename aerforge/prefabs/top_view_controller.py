@@ -1,7 +1,7 @@
 from aerforge import *
 
 class TopViewController(GameObject):
-    def __init__(self, window, shape = Rect, x = 0, y = 0, width = 50, height = 100, color = WHITE):
+    def __init__(self, window, shape = Rect, x = 0, y = 0, width = 50, height = 100, color = Color(240, 240, 240)):
         super().__init__(
             window = window, 
             shape = shape, 

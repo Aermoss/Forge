@@ -1,6 +1,8 @@
-WHITE = (240, 240, 240)
-BLACK = (20, 20, 20)
-GRAY = (100, 100, 100)
-BLUE = (10, 10, 240)
-RED = (240, 10, 10)
-GREEN = (10, 240, 10)
+import pygame
+
+class Color(pygame.Color):
+    def __init__(self, r, g, b, a = 255):
+        self.r = r
+        self.g = g
+        self.b = b
+        self.a = a

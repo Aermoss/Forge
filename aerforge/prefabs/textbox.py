@@ -2,7 +2,7 @@ from aerforge import *
 import pygame
 
 class TextBox:
-    def __init__(self, window, shape = Rect, background_color = (70, 70, 170), background_focus_color = (50, 50, 200), foreground_color = GRAY, foreground_focus_color = GRAY, text_color = WHITE, text_focus_color = WHITE, font_size = 24, font_file = None, text_x = 0, text_y = 0, background_thickness = 2, text_size_limit = 16, x = 0, y = 0, width = 200, height = 50):
+    def __init__(self, window, shape = Rect, background_color = (70, 70, 170), background_focus_color = (50, 50, 200), foreground_color = Color(240, 240, 240), foreground_focus_color = Color(240, 240, 240), text_color = Color(40, 40, 40), text_focus_color = Color(40, 40, 40), font_size = 24, font_file = None, text_x = 0, text_y = 0, background_thickness = 2, text_size_limit = 16, x = 0, y = 0, width = 200, height = 50):
         self.window = window
         
         self.text = ""

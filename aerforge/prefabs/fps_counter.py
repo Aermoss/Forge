@@ -1,7 +1,7 @@
 from aerforge import *
 
 class FpsCounter(Text):
-    def __init__(self, window, font_size = 24, file = None, color = WHITE, x = 0, y = 0, get_integer = True):
+    def __init__(self, window, font_size = 24, file = None, color = Color(240, 240, 240), x = 0, y = 0, get_integer = True):
         super().__init__(
             text = "",
             window = window,

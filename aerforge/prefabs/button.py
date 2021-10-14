@@ -1,7 +1,7 @@
 from aerforge import *
 
 class Button(GameObject):
-    def __init__(self, window, shape = Rect, width = 300, height = 100, x = 0, y = 0, color = GRAY, highlight_color = WHITE, press_color = BLACK):
+    def __init__(self, window, shape = Rect, width = 300, height = 100, x = 0, y = 0, color = Color(100, 100, 100), highlight_color = Color(240, 240, 240), press_color = Color(40, 40, 40)):
         super().__init__(
             window = window, 
             shape = shape, 
@@ -36,3 +36,19 @@ class Button(GameObject):
         else:
             self.color = self.normal_color
             self.state = True
+
+if __name__ == "__main__":
+    from aerforge.prefabs import *
+
+    forge = Forge()
+
+    button = Button(forge)
+    button.center()
+
+    while True:
+        if button.pressed:
+            print("Pressed!")
+
+        button.draw()
+        button.update()
+        forge.update()
