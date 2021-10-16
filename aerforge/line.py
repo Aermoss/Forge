@@ -26,3 +26,10 @@ class Line:
 
     def destroy(self):
         self.destroyed = True
+
+        if self.add_to_objects:
+            try:
+                self.window.objects.pop(self.window.objects.index(self))
+
+            except:
+                pass

@@ -14,8 +14,14 @@ class Sprite(pygame.Rect):
 
         self.image = image
         self.image = pygame.image.load(self.image)
+        self.image = pygame.transform.scale(self.image, (self.width, self.height))
+        self.rotated_image = self.image
+        self.rotated_image_rect = self.rotated_image.get_rect(center = (self.x + self.width / 2, self.y + self.height / 2))
+
+        self.angle = 0
 
         self.destroyed = False
+        self.rotated = False
 
         self.add_to_objects = add_to_objects
 
@@ -24,14 +30,56 @@ class Sprite(pygame.Rect):
 
     def draw(self):
         if not self.destroyed:
-            self.image = pygame.transform.scale(self.image, (self.width, self.height))
-            self.window.window.blit(self.image, (self.x, self.y))
+            if self.angle != 0:
+                self.rotated = True
+
+            if self.rotated:
+                self.image = pygame.transform.scale(self.image, (self.width, self.height))
+                self.rotated_image = pygame.transform.rotozoom(self.image, self.angle, 1)
+                self.rotated_image_rect = self.rotated_image.get_rect(center = (self.x + self.width / 2, self.y + self.height / 2))
+                self.window.window.blit(self.rotated_image, self.rotated_image_rect)
+
+            else:
+                self.image = pygame.transform.scale(self.image, (self.width, self.height))
+                self.window.window.blit(self.image, (self.x, self.y))
+
+    def rotate(self, angle):
+        self.rotated = True
+        self.angle = angle
+
+    def set_image(self, image):
+        self.image = image
+        self.image = pygame.image.load(self.image)
+
+    def get_alpha(self):
+        return self.image.get_alpha()
+
+    def set_alpha(self, alpha):
+        self.image.set_alpha(alpha)
 
     def get_width(self):
-        return self.image.get_width()
+        return self.width
 
     def get_height(self):
-        return self.image.get_height()
+        return self.height
+
+    def set_width(self, width):
+        self.width = width
+
+    def set_height(self, height):
+        self.height = height
+
+    def get_x(self):
+        return self.x
+
+    def get_y(self):
+        return self.y
+
+    def set_x(self, x):
+        self.x = x
+
+    def set_y(self, y):
+        self.y = y
 
     def center(self):
         self.x = self.window.width / 2 - self.width / 2
@@ -78,6 +126,13 @@ class Sprite(pygame.Rect):
 
     def destroy(self):
         self.destroyed = True
+
+        if self.add_to_objects:
+            try:
+                self.window.objects.pop(self.window.objects.index(self))
+
+            except:
+                pass
 
     def play_animation(self, animation, mirror_x = False, mirror_y = False):
         animation.pos = animation.pos + animation.time

@@ -27,7 +27,7 @@ class Forge:
         self.fullscreen = fullscreen
         self.opengl = opengl
 
-        path = os.path.dirname(os.path.abspath(__file__))
+        self.path = os.path.dirname(os.path.abspath(__file__))
 
         if self.fullscreen:
             if self.opengl:
@@ -45,10 +45,21 @@ class Forge:
 
         self.window.fill(Color(20, 20, 20))
 
-        icon = os.path.join(path, "./assets/icon/icon.png")
+        icon = os.path.join(self.path, "./assets/icon/icon.png")
         icon = pygame.image.load(icon)
         pygame.display.set_icon(icon)
         pygame.display.set_caption("Forge")
+
+        self.logo = os.path.join(self.path, "./assets/logo/logo.png")
+        self.logo = pygame.image.load(self.logo)
+        self.logo = pygame.transform.scale(self.logo, (380, 80))
+        self.logo.set_alpha(255)
+
+        self.window_fade = pygame.Surface((self.width, self.height))
+        self.window_fade.fill(Color(0, 0, 0))
+        self.window_fade.set_alpha(255)
+
+        self.start_time = time.time()
 
         self.input = Input()
 
@@ -103,6 +114,27 @@ class Forge:
         self.objects = []
 
     def update(self):
+        window_fade = False
+        logo_fade = False
+
+        if self.logo.get_alpha() > 0:
+            if self.start_time + 6 < time.time():
+                logo_fade = True
+
+            if logo_fade:
+                self.logo.set_alpha(self.logo.get_alpha() - 1.2)
+
+            self.window.blit(self.logo, (self.width / 2 - 380 / 2, self.height / 2 - 80 / 2))
+
+        if self.window_fade.get_alpha() > 0:
+            if self.start_time + 1 < time.time():
+                window_fade = True
+
+            if window_fade:
+                self.window_fade.set_alpha(self.window_fade.get_alpha() - 0.6)
+
+            self.window.blit(self.window_fade, (0, 0))
+
         if self.opengl:
             pygame.display.flip()
 
@@ -118,7 +150,7 @@ class Forge:
         self.input.update()
 
         if self.input._key_pressed:
-            self.input._pressed_key = ""
+            self.input._key_name = ""
             self.input._key_pressed = False
 
         if self.input._mouse_motion:
@@ -139,7 +171,7 @@ class Forge:
                 quit()
 
             if event.type == pygame.KEYDOWN:
-                self.input._pressed_key = event.unicode
+                self.input._key_name = event.unicode
                 self.input._key_pressed = True
 
             if event.type == pygame.MOUSEBUTTONDOWN:
@@ -154,7 +186,7 @@ class Forge:
             if event.type == pygame.MOUSEMOTION:
                 self.input._mouse_motion = True
 
-        self.window.fill((20, 20, 20))
+        self.window.fill(Color(20, 20, 20))
 
         if self.destroyed:
             pygame.quit()

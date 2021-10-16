@@ -81,7 +81,7 @@ class TextBox:
 
             if self.window.input.key_pressed(self.window.keys["RETURN"]):
                 if self.return_state:
-                    self.returned_text = self.text
+                    self.returned_text = self.text[:-1]
                     self.text = ""
                     self.returned = True
                     self.return_state = False
@@ -99,7 +99,7 @@ class TextBox:
 
                 if self.window.input.key_pressed():
                     if len(self.text) < self.text_size_limit:
-                        self.text = self.text + self.window.input._pressed_key
+                        self.text = self.text + self.window.input.key_name()
 
         else:
             self.background.color = self.background_color

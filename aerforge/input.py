@@ -7,7 +7,7 @@ class Input:
         self.key = pygame.key.get_pressed()
         self.mouse = pygame.mouse.get_pressed()
 
-        self._pressed_key = ""
+        self._key_name = ""
 
         self._key_pressed = False
         self._mouse_pressed = False
@@ -26,6 +26,9 @@ class Input:
 
         else:
             return self.key[key]
+
+    def key_name(self):
+        return self._key_name
 
     def mouse_pressed(self, button = None):
         if button == None:

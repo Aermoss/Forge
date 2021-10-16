@@ -38,6 +38,30 @@ class GameObject(pygame.Rect):
             else:
                 raise ForgeError("Invalid shape")
 
+    def get_width(self):
+        return self.width
+
+    def get_height(self):
+        return self.height
+
+    def set_width(self, width):
+        self.width = width
+
+    def set_height(self, height):
+        self.height = height
+
+    def get_x(self):
+        return self.x
+
+    def get_y(self):
+        return self.y
+
+    def set_x(self, x):
+        self.x = x
+
+    def set_y(self, y):
+        self.y = y
+
     def center(self):
         self.x = self.window.width / 2 - self.width / 2
         self.y = self.window.height / 2 - self.height / 2
@@ -80,3 +104,10 @@ class GameObject(pygame.Rect):
 
     def destroy(self):
         self.destroyed = True
+
+        if self.add_to_objects:
+            try:
+                self.window.objects.pop(self.window.objects.index(self))
+
+            except:
+                pass
