@@ -2,11 +2,13 @@ import pygame
 import time
 import os
 
-from aerforge.camera import *
 from aerforge.input import *
 from aerforge.error import *
 from aerforge.color import *
 from aerforge.shape import *
+
+def init():
+    pygame.init()
 
 class Forge:
     def __init__(self, width = 1200, height = 600, fullscreen = False, opengl = False, fps = 60):

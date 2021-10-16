@@ -8,3 +8,5 @@ from aerforge.prefabs.gun import Gun
 from aerforge.prefabs.renderer_3d import Renderer3D
 from aerforge.prefabs.textbox import TextBox
 from aerforge.prefabs.draggable import Draggable
+from aerforge.prefabs.particle import ParticleGenerator
+from aerforge.prefabs.camera import Camera

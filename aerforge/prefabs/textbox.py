@@ -1,8 +1,7 @@
 from aerforge import *
-import pygame
 
 class TextBox:
-    def __init__(self, window, shape = Rect, background_color = (70, 70, 170), background_focus_color = (50, 50, 200), foreground_color = Color(240, 240, 240), foreground_focus_color = Color(240, 240, 240), text_color = Color(40, 40, 40), text_focus_color = Color(40, 40, 40), font_size = 24, font_file = None, text_x = 0, text_y = 0, background_thickness = 2, text_size_limit = 16, x = 0, y = 0, width = 200, height = 50):
+    def __init__(self, window, shape = Rect, background_color = (0, 240, 255), background_focus_color = (0, 140, 255), foreground_color = Color(240, 240, 240), foreground_focus_color = Color(240, 240, 240), text_color = Color(40, 40, 40), text_focus_color = Color(40, 40, 40), font_size = 24, font_file = None, text_x = 0, text_y = 0, background_thickness = 2, text_size_limit = 16, x = 0, y = 0, width = 200, height = 50):
         self.window = window
         
         self.text = ""
@@ -32,9 +31,12 @@ class TextBox:
         self.text_color = text_color
         self.text_focus_color = text_focus_color
 
+        self.font_size = font_size
+        self.font_file = font_file
+
         self.background = GameObject(self.window, shape = shape, color = self.background_color, width = self.width, height = self.height, x = self.x, y = self.y)
         self.foreground = GameObject(self.window, shape = shape, color = self.foreground_color, width = self.width - self.background_thickness * 2, height = self.height - self.background_thickness * 2, x = self.x + self.background_thickness, y = self.y + self.background_thickness)
-        self.text_renderer = Text(self.window, text = self.text, file = font_file, font_size = font_size, color = self.text_color, x = self.x + 15 + self.text_x, y = self.y + (self.foreground.height / 2) - 5 + self.text_y)
+        self.text_renderer = Text(self.window, text = self.text, font_file = self.font_file, font_size = self.font_size, color = self.text_color, x = self.x + 15 + self.text_x, y = self.y + (self.foreground.height / 2) + (self.font_size / 3) + self.text_y)
 
     def draw(self):
         self.background.draw()
@@ -97,7 +99,7 @@ class TextBox:
 
                 if self.window.input.key_pressed():
                     if len(self.text) < self.text_size_limit:
-                        self.text = self.text + self.window.input.pressed_key_name
+                        self.text = self.text + self.window.input._pressed_key
 
         else:
             self.background.color = self.background_color

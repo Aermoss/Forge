@@ -56,6 +56,26 @@ class Sprite(pygame.Rect):
         else:
             raise ForgeError("Invalid type")
 
+    def hit2(self, gameobject, collision_tolreance = 10):
+        if self.hit(gameobject):
+            if abs(gameobject.top - self.bottom) < collision_tolreance:
+                return "bottom"
+
+            elif abs(gameobject.bottom - self.top) < collision_tolreance:
+                return "top"
+
+            elif abs(gameobject.right - self.left) < collision_tolreance:
+                return "left"
+
+            elif abs(gameobject.left - self.right) < collision_tolreance:
+                return "right"
+
+            else:
+                return ""
+        
+        else:
+            return ""
+
     def destroy(self):
         self.destroyed = True
 
