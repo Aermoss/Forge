@@ -34,8 +34,8 @@ class TextBox:
         self.font_size = font_size
         self.font_file = font_file
 
-        self.background = GameObject(self.window, shape = shape, color = self.background_color, width = self.width, height = self.height, x = self.x, y = self.y)
-        self.foreground = GameObject(self.window, shape = shape, color = self.foreground_color, width = self.width - self.background_thickness * 2, height = self.height - self.background_thickness * 2, x = self.x + self.background_thickness, y = self.y + self.background_thickness)
+        self.background = Entity(self.window, shape = shape, color = self.background_color, width = self.width, height = self.height, x = self.x, y = self.y)
+        self.foreground = Entity(self.window, shape = shape, color = self.foreground_color, width = self.width - self.background_thickness * 2, height = self.height - self.background_thickness * 2, x = self.x + self.background_thickness, y = self.y + self.background_thickness)
         self.text_renderer = Text(self.window, text = self.text, font_file = self.font_file, font_size = self.font_size, color = self.text_color, x = self.x + 15 + self.text_x, y = self.y + (self.foreground.height / 2) + (self.font_size / 3) + self.text_y)
 
     def draw(self):

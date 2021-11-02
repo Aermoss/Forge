@@ -35,7 +35,7 @@ class ParticleGenerator:
 
         self.particles = []
 
-class Particle(GameObject):
+class Particle(Entity):
     def __init__(self, window, shape = Rect, x = 0, y = 0, width = 10, height = 10, color = Color(240, 240, 240), destroy_particle = True, animate = True, destroy_time = 2, width_decrease_amount = 10, height_decrease_amount = 10):
         super().__init__(
             window = window,

@@ -1,6 +1,6 @@
 from aerforge import *
 
-class ToolTip(GameObject):
+class ToolTip(Entity):
     def __init__(self, window, object, shape = Rect, width = 100, height = 50, color = (5, 5, 5), file = None, size = 24, text = "", text_x = 0, text_y = 0):
         super().__init__(
             window = window, 
@@ -35,7 +35,7 @@ class ToolTip(GameObject):
 if __name__ == "__main__":
     forge = Forge()
 
-    game_object = GameObject(forge, shape = Rect)
+    game_object = Entity(forge, shape = Rect)
     game_object.center()
 
     tooltip = ToolTip(forge, game_object, shape = Rect, text = "Sword", width = 150, height = 50, size = 30)

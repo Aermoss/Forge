@@ -3,7 +3,7 @@ import pygame
 from aerforge.error import *
 
 class Sprite(pygame.Rect):
-    def __init__(self, window, image, x = 0, y = 0, width = 200, height = 200, add_to_objects = True):
+    def __init__(self, window, file, width = 1200, height = 600, x = 0, y = 0, add_to_objects = True):
         self.window = window
 
         self.x = x
@@ -12,8 +12,8 @@ class Sprite(pygame.Rect):
         self.width = width
         self.height = height
 
-        self.image = image
-        self.image = pygame.image.load(self.image)
+        self.file = file
+        self.image = pygame.image.load(self.file)
         self.image = pygame.transform.scale(self.image, (self.width, self.height))
         self.rotated_image = self.image
         self.rotated_image_rect = self.rotated_image.get_rect(center = (self.x + self.width / 2, self.y + self.height / 2))
@@ -47,9 +47,9 @@ class Sprite(pygame.Rect):
         self.rotated = True
         self.angle = angle
 
-    def set_image(self, image):
-        self.image = image
-        self.image = pygame.image.load(self.image)
+    def set_image(self, file):
+        self.file = file
+        self.image = pygame.image.load(self.file)
 
     def get_alpha(self):
         return self.image.get_alpha()

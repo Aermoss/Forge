@@ -5,15 +5,15 @@ with open("README.md", "r", encoding = "UTF-8") as file:
  
 setup(
     name = "aerforge",
-    version = "0.0.9",
-    description = "A game engine made with SDL 2.",
+    version = "0.1.0",
+    description = "A game engine made with SDL.",
     long_description = long_desc,
     long_description_content_type = "text/markdown",
     url = "https://github.com/Aermoss/AerForge",
     author = "Yusuf Rencber",
     author_email = "yusufrencber546@gmail.com",
     license = "MIT",
-    keywords = "game engine",
+    keywords = "",
     packages = find_packages(),
     include_package_data = True,
     install_requires = ["pygame"]

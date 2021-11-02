@@ -2,7 +2,7 @@ from aerforge import *
 
 forge = Forge()
 
-class Cube(GameObject):
+class Cube(Entity):
     def __init__(self):
         super().__init__(
             window = forge,

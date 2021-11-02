@@ -6,15 +6,19 @@ from aerforge.input import *
 from aerforge.error import *
 from aerforge.color import *
 from aerforge.shape import *
+from aerforge.entity import *
+from aerforge.sprite import *
 
 def init():
     pygame.init()
 
 class Forge:
-    def __init__(self, width = 1200, height = 600, fullscreen = False, opengl = False, fps = 60):
+    def __init__(self, width = 1200, height = 600, background_color = Color(20, 20, 20), fullscreen = False, doublebuf = False, opengl = False, fps = 60):
         self.width = width
         self.height = height
         self.fps = fps
+
+        self.background_color = background_color
 
         pygame.init()
 
@@ -26,6 +30,7 @@ class Forge:
 
         self.fullscreen = fullscreen
         self.opengl = opengl
+        self.doublebuf = doublebuf
 
         self.path = os.path.dirname(os.path.abspath(__file__))
 
@@ -34,14 +39,22 @@ class Forge:
                 self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.OPENGL)
             
             else:
-                self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
+                if self.doublebuf:
+                    self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN | pygame.DOUBLEBUF)
+
+                else:
+                    self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
 
         else:
             if self.opengl:
                 self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL)
 
             else:
-                self.window = pygame.display.set_mode((self.width, self.height))
+                if self.doublebuf:
+                    self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
+
+                else:
+                    self.window = pygame.display.set_mode((self.width, self.height))
 
         self.window.fill(Color(20, 20, 20))
 
@@ -135,11 +148,7 @@ class Forge:
 
             self.window.blit(self.window_fade, (0, 0))
 
-        if self.opengl:
-            pygame.display.flip()
-
-        else:
-            pygame.display.update()
+        pygame.display.flip()
 
         self.clock.tick(self.fps)
 
@@ -186,7 +195,7 @@ class Forge:
             if event.type == pygame.MOUSEMOTION:
                 self.input._mouse_motion = True
 
-        self.window.fill(Color(20, 20, 20))
+        self.window.fill(self.background_color)
 
         if self.destroyed:
             pygame.quit()

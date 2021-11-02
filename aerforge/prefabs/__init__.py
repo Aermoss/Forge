@@ -10,3 +10,4 @@ from aerforge.prefabs.textbox import TextBox
 from aerforge.prefabs.draggable import Draggable
 from aerforge.prefabs.particle import ParticleGenerator
 from aerforge.prefabs.camera import Camera
+from aerforge.prefabs.cursor import Cursor

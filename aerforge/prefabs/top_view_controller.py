@@ -1,6 +1,6 @@
 from aerforge import *
 
-class TopViewController(GameObject):
+class TopViewController(Entity):
     def __init__(self, window, shape = Rect, x = 0, y = 0, width = 50, height = 100, color = Color(240, 240, 240), sprint_speed = 6, walk_speed = 3, collision_tolreance = 0, not_complete_features = False):
         super().__init__(
             window = window,
@@ -75,7 +75,7 @@ class TopViewController(GameObject):
 if __name__ == "__main__":
     forge = Forge()
 
-    cube = GameObject(forge, Rect, width = 200, height = 200, color = Color(100, 100, 180))
+    cube = Entity(forge, Rect, width = 200, height = 200, color = Color(100, 100, 180))
     cube.center()
 
     player = TopViewController(forge)

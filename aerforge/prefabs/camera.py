@@ -14,8 +14,8 @@ if __name__ == "__main__":
 
     forge = Forge()
 
-    cube1 = GameObject(forge, width = 100, height = 100, x = 100, y = 200)
-    cube2 = GameObject(forge, width = 100, height = 100, x = 500, y = 300)
+    cube1 = Entity(forge, width = 100, height = 100, x = 100, y = 200)
+    cube2 = Entity(forge, width = 100, height = 100, x = 500, y = 300)
 
     player = TopViewController(forge)
 

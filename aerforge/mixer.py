@@ -1,7 +1,5 @@
 import pygame
 
-from aerforge.error import ForgeError
-
 class Mixer:
     def __init__(self, file, volume = 1.0):
         self.file = file
@@ -10,15 +8,8 @@ class Mixer:
         self.audio = pygame.mixer.Sound(self.file)
         self.audio.set_volume(self.volume)
 
-    def play(self, loop = False):
-        if loop:
-            self.audio.play(-1)
-
-        elif not loop:
-            self.audio.play()
-
-        else:
-            raise ForgeError("Loop argument is should be bool")
+    def play(self, loops = 0):
+        self.audio.play(loops)
 
     def stop(self):
         self.audio.stop()
@@ -29,7 +20,10 @@ class Mixer:
     def unpause(self):
         self.audio.unpause()
 
-    def fadeout(self, time):
+    def fade_in(self, time = 1000, loops = 0):
+        self.audio.play(loops, fade_ms = time)
+
+    def fade_out(self, time = 1000):
         self.audio.fadeout(time)
 
     def set_volume(self, volume):
