@@ -72,28 +72,28 @@ class Entity(pygame.Rect):
     def center_y(self):
         self.y = self.window.height / 2 - self.height / 2
 
-    def hit(self, gameobject):
-        if isinstance(gameobject, pygame.Rect):
-            return self.colliderect(gameobject)
+    def hit(self, entity):
+        if isinstance(entity, pygame.Rect):
+            return self.colliderect(entity)
 
-        elif isinstance(gameobject, tuple):
-            return self.collidepoint(gameobject)
+        elif isinstance(entity, tuple):
+            return self.collidepoint(entity)
 
         else:
             raise ForgeError("Invalid type")
 
-    def hit2(self, gameobject, collision_tolreance = 10):
-        if self.hit(gameobject):
-            if abs(gameobject.top - self.bottom) < collision_tolreance:
+    def hit2(self, entity, collision_tolreance = 10):
+        if self.hit(entity):
+            if abs(entity.top - self.bottom) < collision_tolreance:
                 return "bottom"
 
-            elif abs(gameobject.bottom - self.top) < collision_tolreance:
+            elif abs(entity.bottom - self.top) < collision_tolreance:
                 return "top"
 
-            elif abs(gameobject.right - self.left) < collision_tolreance:
+            elif abs(entity.right - self.left) < collision_tolreance:
                 return "left"
 
-            elif abs(gameobject.left - self.right) < collision_tolreance:
+            elif abs(entity.left - self.right) < collision_tolreance:
                 return "right"
 
             else:

@@ -8,8 +8,8 @@ class Mixer:
         self.audio = pygame.mixer.Sound(self.file)
         self.audio.set_volume(self.volume)
 
-    def play(self, loops = 0):
-        self.audio.play(loops)
+    def play(self, loop = 0):
+        self.audio.play(loop)
 
     def stop(self):
         self.audio.stop()
@@ -20,11 +20,11 @@ class Mixer:
     def unpause(self):
         self.audio.unpause()
 
-    def fade_in(self, time = 1000, loops = 0):
-        self.audio.play(loops, fade_ms = time)
+    def fade_in(self, duration = 1000, loop = 0):
+        self.audio.play(loop, fade_ms = duration)
 
-    def fade_out(self, time = 1000):
-        self.audio.fadeout(time)
+    def fade_out(self, duration = 1000):
+        self.audio.fadeout(duration)
 
     def set_volume(self, volume):
         self.volume = volume

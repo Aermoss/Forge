@@ -5,7 +5,7 @@ from aerforge.prefabs.fps_counter import FpsCounter
 from aerforge.prefabs.tooltip import ToolTip
 from aerforge.prefabs.gravity import Gravity
 from aerforge.prefabs.gun import Gun
-from aerforge.prefabs.renderer_3d import Renderer3D
+from aerforge.prefabs.renderer_3d import Renderer3D, Camera, Vec3, Entity3D, Cube
 from aerforge.prefabs.textbox import TextBox
 from aerforge.prefabs.draggable import Draggable
 from aerforge.prefabs.particle import ParticleGenerator
