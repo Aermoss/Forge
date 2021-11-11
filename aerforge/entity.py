@@ -3,7 +3,7 @@ import pygame
 from aerforge import *
 
 class Entity(pygame.Rect):
-    def __init__(self, window, shape = Rect, width = 50, height = 50, x = 0, y = 0, color = Color(240, 240, 240), points = [], add_to_objects = True):
+    def __init__(self, window, shape = Rect, width = 200, height = 200, x = 0, y = 0, color = Color(240, 240, 240), scripts = [], add_to_objects = True):
         self.window = window
 
         self.width = width
@@ -15,7 +15,7 @@ class Entity(pygame.Rect):
         self.shape = shape
         self.color = color
 
-        self.points = points
+        self.scripts = scripts
 
         self.destroyed = False
 
@@ -23,6 +23,10 @@ class Entity(pygame.Rect):
 
         if self.add_to_objects:
             self.window.objects.append(self)
+
+    def _update(self):
+        for script in self.scripts:
+            script.update(self)
 
     def draw(self):
         if not self.destroyed:
@@ -32,11 +36,14 @@ class Entity(pygame.Rect):
             elif self.shape == Circle:
                 pygame.draw.ellipse(self.window.window, self.color, self)
 
-            elif self.shape == Polygon:
-                pygame.draw.polygon(self.window.window, self.color, self.points)
-
             else:
                 raise ForgeError("Invalid shape")
+
+    def set_color(self, color):
+        self.color = color
+
+    def get_color(self):
+        return self.color
 
     def get_width(self):
         return self.width
@@ -111,3 +118,9 @@ class Entity(pygame.Rect):
 
             except:
                 pass
+
+    def add_script(self, script):
+        self.scripts.append(script)
+
+    def remove_script(self, script):
+        self.scripts.pop(self.scripts.index(script))

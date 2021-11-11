@@ -1,6 +1,8 @@
 import pygame
+
 import time
 import os
+import warnings
 
 from aerforge.input import *
 from aerforge.error import *
@@ -8,6 +10,8 @@ from aerforge.color import *
 from aerforge.shape import *
 from aerforge.entity import *
 from aerforge.sprite import *
+
+warnings.filterwarnings("ignore")
 
 def init():
     pygame.init()
@@ -34,6 +38,11 @@ class Forge:
 
         self.path = os.path.dirname(os.path.abspath(__file__))
 
+        icon = os.path.join(self.path, "./assets/icon/icon.png")
+        icon = pygame.image.load(icon)
+        pygame.display.set_icon(icon)
+        pygame.display.set_caption("Forge")
+
         if self.fullscreen:
             if self.opengl:
                 self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.OPENGL)
@@ -57,11 +66,6 @@ class Forge:
                     self.window = pygame.display.set_mode((self.width, self.height))
 
         self.window.fill(Color(20, 20, 20))
-
-        icon = os.path.join(self.path, "./assets/icon/icon.png")
-        icon = pygame.image.load(icon)
-        pygame.display.set_icon(icon)
-        pygame.display.set_caption("Forge")
 
         self.logo = os.path.join(self.path, "./assets/logo/logo.png")
         self.logo = pygame.image.load(self.logo)
@@ -201,6 +205,16 @@ class Forge:
             pygame.quit()
             quit()
 
+    def updateall(self):
+        for object in self.objects:
+            object._update()
+
+        self.update()
+
+    def update_scripts(self):
+        for object in self.objects:
+            object._update()
+
     def destroy(self):
         self.destroyed = True
 
@@ -224,7 +238,7 @@ class Forge:
     def set_mouse_pos(self, pos):
         pygame.mouse.set_pos(pos)
 
-    def draw(self, shape = Rect, color = Color(240, 240, 240), x = 0, y = 0, width = 20, height = 20, points = [], start_x = 0, start_y = 0, end_x = 0, end_y = 0):
+    def draw(self, shape = Rect, color = Color(240, 240, 240), x = 0, y = 0, width = 20, height = 20, points = []):
         if shape == Rect:
             pygame.draw.rect(self.window, color, (x, y, width, height))
 
@@ -235,7 +249,8 @@ class Forge:
             pygame.draw.polygon(self.window, color, points)
 
         elif shape == Line:
-            pygame.draw.aaline(self.window, color, (start_x, start_y), (end_x, end_y))
+            for point in self.points:
+                pygame.draw.aaline(self.window.window, self.color, point[0], point[1])
 
         else:
             raise ForgeError("Invalid shape")

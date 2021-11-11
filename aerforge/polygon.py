@@ -2,7 +2,7 @@ import pygame
 
 from aerforge import *
 
-class Line:
+class Polygon:
     def __init__(self, window, points, color = Color(240, 240, 240), scripts = [], add_to_objects = True):
         self.window = window
         
@@ -19,13 +19,13 @@ class Line:
             self.window.objects.append(self)
 
     def _update(self):
-        for script in self.scripts:
-            script.update(self)
+        if not self.destroyed:
+            for script in self.scripts:
+                script.update(self)
 
     def draw(self):
         if not self.destroyed:
-            for point in self.points:
-                pygame.draw.aaline(self.window.window, self.color, point[0], point[1])
+            pygame.draw.polygon(self.window.window, self.color, self.points)
 
     def set_color(self, color):
         self.color = color

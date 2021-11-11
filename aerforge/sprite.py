@@ -3,7 +3,7 @@ import pygame
 from aerforge.error import *
 
 class Sprite(pygame.Rect):
-    def __init__(self, window, file, width = 1200, height = 600, x = 0, y = 0, add_to_objects = True):
+    def __init__(self, window, file, width = 200, height = 200, x = 0, y = 0, scripts = [], add_to_objects = True):
         self.window = window
 
         self.x = x
@@ -20,6 +20,8 @@ class Sprite(pygame.Rect):
 
         self.angle = 0
 
+        self.scripts = scripts
+
         self.destroyed = False
         self.rotated = False
 
@@ -27,6 +29,11 @@ class Sprite(pygame.Rect):
 
         if self.add_to_objects:
             self.window.objects.append(self)
+
+    def _update(self):
+        if not self.destroyed:
+            for script in self.scripts:
+                script.update(self)
 
     def draw(self):
         if not self.destroyed:
@@ -133,6 +140,12 @@ class Sprite(pygame.Rect):
 
             except:
                 pass
+
+    def add_script(self, script):
+        self.scripts.append(script)
+
+    def remove_script(self, script):
+        self.scripts.pop(self.scripts.index(script))
 
     def play_animation(self, animation, mirror_x = False, mirror_y = False):
         animation.pos = animation.pos + animation.time

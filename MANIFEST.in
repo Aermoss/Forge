@@ -1,3 +1,4 @@
 include aerforge/assets/icon/*
 include aerforge/assets/logo/*
 include aerforge/prefabs/*
+include aerforge/scripts/*

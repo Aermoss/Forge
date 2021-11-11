@@ -21,6 +21,12 @@ class Gravity:
         self.velocity_x = self.velocity_x + force_x
         self.velocity_y = self.velocity_y + force_y
 
+    def add_object(self, object):
+        self.objects.append(object)
+
+    def remove_object(self, object):
+        self.objects.pop(self.objects.index(object))
+
     def update(self):
         self.object.x = self.object.x + self.velocity_x
         self.object.y = self.object.y + self.velocity_y
