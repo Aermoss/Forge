@@ -3,7 +3,7 @@ import pygame
 from aerforge import *
 
 class Entity(pygame.Rect):
-    def __init__(self, window, shape = Rect, width = 200, height = 200, x = 0, y = 0, color = Color(240, 240, 240), scripts = [], add_to_objects = True):
+    def __init__(self, window, shape = Rect, width = 200, height = 200, x = 0, y = 0, color = Color(240, 240, 240), alpha = 255, fill = True, scripts = [], add_to_objects = True):
         self.window = window
 
         self.width = width
@@ -11,6 +11,10 @@ class Entity(pygame.Rect):
 
         self.x = x
         self.y = y
+
+        self.alpha = alpha
+
+        self.fill = not fill
 
         self.shape = shape
         self.color = color
@@ -31,13 +35,37 @@ class Entity(pygame.Rect):
     def draw(self):
         if not self.destroyed:
             if self.shape == Rect:
-                pygame.draw.rect(self.window.window, self.color, self)
+                if self.alpha != 0:
+                    shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
+                    pygame.draw.rect(shape_surf, (self.color.r, self.color.g, self.color.b, self.alpha), shape_surf.get_rect(), self.fill)
+                    self.window.window.blit(shape_surf, self)
+
+                else:
+                    pygame.draw.rect(self.window.window, self.color, self, self.fill)
 
             elif self.shape == Circle:
-                pygame.draw.ellipse(self.window.window, self.color, self)
+                if self.alpha != 0:
+                    shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
+                    pygame.draw.ellipse(shape_surf, (self.color.r, self.color.g, self.color.b, self.alpha), shape_surf.get_rect(), self.fill)
+                    self.window.window.blit(shape_surf, self)
+
+                else:
+                    pygame.draw.ellipse(self.window.window, self.color, self, self.fill)
 
             else:
                 raise ForgeError("Invalid shape")
+
+    def set_fill(self, fill):
+        self.fill = not fill
+
+    def get_fill(self):
+        return self.fill
+
+    def set_alpha(self, alpha):
+        self.alpha = alpha
+
+    def get_alpha(self):
+        return self.alpha
 
     def set_color(self, color):
         self.color = color
@@ -80,14 +108,11 @@ class Entity(pygame.Rect):
         self.y = self.window.height / 2 - self.height / 2
 
     def hit(self, entity):
-        if isinstance(entity, pygame.Rect):
-            return self.colliderect(entity)
-
-        elif isinstance(entity, tuple):
-            return self.collidepoint(entity)
+        if isinstance(entity, Vec2):
+            return self.collidepoint((entity.x, entity.y))
 
         else:
-            raise ForgeError("Invalid type")
+            return self.colliderect(entity)
 
     def hit2(self, entity, collision_tolreance = 10):
         if self.hit(entity):

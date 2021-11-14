@@ -2,7 +2,6 @@ import pygame
 
 import time
 import os
-import warnings
 
 from aerforge.input import *
 from aerforge.error import *
@@ -11,13 +10,11 @@ from aerforge.shape import *
 from aerforge.entity import *
 from aerforge.sprite import *
 
-warnings.filterwarnings("ignore")
-
 def init():
     pygame.init()
 
 class Forge:
-    def __init__(self, width = 1200, height = 600, background_color = Color(20, 20, 20), fullscreen = False, doublebuf = False, opengl = False, fps = 60):
+    def __init__(self, width = 1200, height = 600, background_color = Color(20, 20, 20), fullscreen = False, bordered = True, doublebuf = False, opengl = False, fps = 60):
         self.width = width
         self.height = height
         self.fps = fps
@@ -33,6 +30,7 @@ class Forge:
         self.dt = 0
 
         self.fullscreen = fullscreen
+        self.bordered = bordered
         self.opengl = opengl
         self.doublebuf = doublebuf
 
@@ -56,25 +54,34 @@ class Forge:
 
         else:
             if self.opengl:
-                self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL)
+                if not self.bordered:
+                    self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL, 32)
+
+                else:
+                    self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL)
 
             else:
                 if self.doublebuf:
-                    self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
+                    if not self.bordered:
+                        self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF, 32)
+
+                    else:
+                        self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
 
                 else:
-                    self.window = pygame.display.set_mode((self.width, self.height))
+                    if not self.bordered:
+                        self.window = pygame.display.set_mode((self.width, self.height), 32)
 
-        self.window.fill(Color(20, 20, 20))
+                    else:
+                        self.window = pygame.display.set_mode((self.width, self.height))
+
+        self.window.fill(self.background_color)
 
         self.logo = os.path.join(self.path, "./assets/logo/logo.png")
-        self.logo = pygame.image.load(self.logo)
-        self.logo = pygame.transform.scale(self.logo, (380, 80))
-        self.logo.set_alpha(255)
+        self.logo = Sprite(self, self.logo, width = 380, height = 80, add_to_objects = False)
+        self.logo.center()
 
-        self.window_fade = pygame.Surface((self.width, self.height))
-        self.window_fade.fill(Color(0, 0, 0))
-        self.window_fade.set_alpha(255)
+        self.window_fade = Entity(self, color = Color(0, 0, 0), width = self.width, height = self.height, add_to_objects = False)
 
         self.start_time = time.time()
 
@@ -141,7 +148,7 @@ class Forge:
             if logo_fade:
                 self.logo.set_alpha(self.logo.get_alpha() - 1.2)
 
-            self.window.blit(self.logo, (self.width / 2 - 380 / 2, self.height / 2 - 80 / 2))
+            self.logo.draw()
 
         if self.window_fade.get_alpha() > 0:
             if self.start_time + 1 < time.time():
@@ -150,7 +157,7 @@ class Forge:
             if window_fade:
                 self.window_fade.set_alpha(self.window_fade.get_alpha() - 0.6)
 
-            self.window.blit(self.window_fade, (0, 0))
+            self.window_fade.draw()
 
         pygame.display.flip()
 
@@ -238,19 +245,21 @@ class Forge:
     def set_mouse_pos(self, pos):
         pygame.mouse.set_pos(pos)
 
-    def draw(self, shape = Rect, color = Color(240, 240, 240), x = 0, y = 0, width = 20, height = 20, points = []):
+    def draw(self, shape = Rect, color = Color(240, 240, 240), fill = True, x = 0, y = 0, width = 200, height = 200, points = []):
+        fill = not fill
+        
         if shape == Rect:
-            pygame.draw.rect(self.window, color, (x, y, width, height))
+            pygame.draw.rect(self.window, color, (x, y, width, height), fill)
 
         elif shape == Circle:
-            pygame.draw.ellipse(self.window, color, (x, y, width, height))
+            pygame.draw.ellipse(self.window, color, (x, y, width, height), fill)
 
         elif shape == Polygon:
-            pygame.draw.polygon(self.window, color, points)
+            pygame.draw.polygon(self.window, color, points, fill)
 
         elif shape == Line:
-            for point in self.points:
-                pygame.draw.aaline(self.window.window, self.color, point[0], point[1])
+            for point in points:
+                pygame.draw.aaline(self.window, color, point[0], point[1])
 
         else:
             raise ForgeError("Invalid shape")

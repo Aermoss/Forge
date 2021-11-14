@@ -201,6 +201,7 @@ if __name__ == "__main__":
     renderer.load_test_scene()
 
     while True:
+        renderer.objects[0].pos.x += 0.01
         renderer.draw()
         renderer.update()
         forge.update()

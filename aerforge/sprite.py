@@ -1,9 +1,9 @@
 import pygame
 
-from aerforge.error import *
+from aerforge import *
 
 class Sprite(pygame.Rect):
-    def __init__(self, window, file, width = 200, height = 200, x = 0, y = 0, scripts = [], add_to_objects = True):
+    def __init__(self, window, file, alpha = 255, width = 200, height = 200, x = 0, y = 0, scripts = [], add_to_objects = True):
         self.window = window
 
         self.x = x
@@ -11,6 +11,8 @@ class Sprite(pygame.Rect):
 
         self.width = width
         self.height = height
+
+        self.alpha = alpha
 
         self.file = file
         self.image = pygame.image.load(self.file)
@@ -59,10 +61,12 @@ class Sprite(pygame.Rect):
         self.image = pygame.image.load(self.file)
 
     def get_alpha(self):
-        return self.image.get_alpha()
+        self.alpha = self.image.get_alpha()
+        return self.alpha
 
     def set_alpha(self, alpha):
-        self.image.set_alpha(alpha)
+        self.alpha = alpha
+        self.image.set_alpha(self.alpha)
 
     def get_width(self):
         return self.width
@@ -102,14 +106,11 @@ class Sprite(pygame.Rect):
         self.image = pygame.transform.scale(self.image, size)
 
     def hit(self, entity):
-        if isinstance(entity, pygame.Rect):
-            return self.colliderect(entity)
-
-        elif isinstance(entity, tuple):
-            return self.collidepoint(entity)
+        if isinstance(entity, Vec2):
+            return self.collidepoint((entity.x, entity.y))
 
         else:
-            raise ForgeError("Invalid type")
+            return self.colliderect(entity)
 
     def hit2(self, entity, collision_tolreance = 10):
         if self.hit(entity):

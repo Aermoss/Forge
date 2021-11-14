@@ -37,16 +37,20 @@ class Button(Entity):
             self.color = self.normal_color
             self.state = True
 
-if __name__ == "__main__":
-    from aerforge.prefabs import *
+    def is_pressed(self):
+        if self.pressed:
+            return True
 
+        return False
+
+if __name__ == "__main__":
     forge = Forge()
 
     button = Button(forge)
     button.center()
 
     while True:
-        if button.pressed:
+        if button.is_pressed():
             print("Pressed!")
 
         button.draw()

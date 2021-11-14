@@ -1,23 +1,30 @@
 from aerforge import *
+
 import math
 import time
 
 class Gun:
-    def __init__(self, window, player):
+    def __init__(self, window, x = 0, y = 0, bullet_speed = 50, shoot_cooldown = 0.1, magazine_size = 20, selected = True, automatic = False, reload_time = 2.4):
         self.window = window
-        self.player = player
-        self.bullet_speed = 30
-        self.all_bullets = []
-        self.state = True
-        self.last_shoot = time.time()
-        self.shoot_time = 0.1
-        self.magazine_size = 20
-        self.bullets = self.magazine_size
+
+        self.x = x
+        self.y = y
+
+        self.bullet_speed = bullet_speed
+        self.shoot_cooldown = shoot_cooldown
+        self.magazine_size = magazine_size
+        self.reload_time = reload_time
+        self.selected = selected
+        self.automatic = automatic
+
+        self.bullet_count = self.magazine_size
         self.reload_start_time = time.time()
-        self.reload_time = 2.4
+        self.last_shoot = time.time()
+        self.all_bullets = []
+
+        self.state = True
         self.reloading = False
-        self.selected = True
-        self.automatic = False
+        self.shooting = False
 
     def reload(self):
         if not self.reloading:
@@ -25,44 +32,52 @@ class Gun:
             self.reload_start_time = time.time()
 
     def shoot(self):
+        self.shooting = True
+
         mouse_x, mouse_y = self.window.input.mouse_pos()
                     
-        distance_x = mouse_x - self.player.x
-        distance_y = mouse_y - self.player.y
+        distance_x = mouse_x - self.x
+        distance_y = mouse_y - self.y
         
         angle = math.atan2(distance_y, distance_x)
 
         speed_x = self.bullet_speed * math.cos(angle)
         speed_y = self.bullet_speed * math.sin(angle)
 
-        self.all_bullets.append([self.player.x + (self.player.width / 2), self.player.y + (self.player.height / 2 - 45), speed_x, speed_y])
+        self.all_bullets.append([self.x, self.y, speed_x, speed_y])
 
     def get_input(self):
         if self.window.input.key_pressed(self.window.keys["R"]):
-            if self.bullets != self.magazine_size:
+            if self.bullet_count != self.magazine_size:
                 self.reload()
 
         if self.window.input.mouse_pressed(self.window.buttons["LEFT"]):
             if self.state:
                 if not self.reloading:
-                    if self.bullets > 0:
+                    if self.bullet_count > 0:
                         self.shoot()
                         self.state = False
                         self.last_shoot = time.time()
-                        self.bullets = self.bullets - 1
+                        self.bullet_count = self.bullet_count - 1
         
         else:
             if not self.automatic:
-                if self.last_shoot + self.shoot_time < time.time():
+                if self.last_shoot + self.shoot_cooldown < time.time():
                     self.state = True
 
     def update(self):
+        if self.bullet_count > self.magazine_size:
+            self.bullet_count = self.magazine_size
+
+        if self.shooting:
+            self.shooting = False
+
         if self.selected:
-            if self.bullets <= 0:
+            if self.bullet_count <= 0:
                 self.reload()
 
             if self.automatic:
-                if self.last_shoot + self.shoot_time < time.time():
+                if self.last_shoot + self.shoot_cooldown < time.time():
                     self.state = True
 
             self.get_input()
@@ -70,7 +85,7 @@ class Gun:
             if self.reloading:
                 if self.reload_start_time + self.reload_time < time.time():
                     self.reloading = False
-                    self.bullets = self.magazine_size
+                    self.bullet_count = self.magazine_size
 
         else:
             self.reloading = False
@@ -79,6 +94,7 @@ class Gun:
             item[0] = item[0] + item[2]
             item[1] = item[1] + item[3]
 
+    def draw(self):
         for pos_x, pos_y, speed_x, speed_y in self.all_bullets:
             if pos_x > self.window.width or pos_x < 0 or pos_y > self.window.height or pos_y < 0:
                 self.all_bullets.pop(self.all_bullets.index([pos_x, pos_y, speed_x, speed_y]))
@@ -86,18 +102,63 @@ class Gun:
             else:
                 self.window.draw(shape = Rect, width = 10, height = 10, x = int(pos_x), y = int(pos_y))
 
+    def is_reloading(self):
+        if self.reloading:
+            return True
+        
+        return False
+
+    def is_shooting(self):
+        if self.shooting:
+            return True
+        
+        return False
+
+    def center(self):
+        self.x = self.window.width / 2
+        self.y = self.window.height / 2
+
+    def center_x(self):
+        self.x = self.window.width / 2
+
+    def center_y(self):
+        self.y = self.window.height / 2
+
+    def set_magazine_size(self, magazine_size):
+        self.magazine_size = magazine_size
+        
+        if self.bullet_count > self.magazine_size:
+            self.bullet_count = self.magazine_size
+
+    def get_magazine_size(self):
+        return self.magazine_size
+
+    def set_bullet_count(self, count):
+        self.bullet_count = count
+
+        if self.bullet_count > self.magazine_size:
+            self.bullet_count = self.magazine_size
+
+    def get_bullet_count(self):
+        return self.bullet_count
+                
 if __name__ == "__main__":
-    from aerforge.prefabs import *
+    from aerforge.prefabs import TopViewController
 
     forge = Forge()
 
     player = TopViewController(forge)
     player.center()
 
-    gun = Gun(forge, player)
+    gun = Gun(forge)
 
     while True:
+        gun.x = player.x + player.width / 2
+        gun.y = player.y + 15
+
         player.update()
-        gun.update()
         player.draw()
+        gun.update()
+        gun.draw()
+
         forge.update()

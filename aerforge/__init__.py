@@ -16,6 +16,7 @@ from aerforge.sprite import Sprite
 from aerforge.line import Line
 from aerforge.animation import Animation
 from aerforge.movie import Movie
+from aerforge.polygon import Polygon
 
 import aerforge.scripts as scripts
 import aerforge.prefabs as prefabs

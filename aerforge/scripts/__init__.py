@@ -1,1 +1,1 @@
-from aerforge.scripts.gravity import Gravity
+from aerforge.scripts.follow_camera import FollowCamera
