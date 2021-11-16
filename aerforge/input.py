@@ -48,7 +48,7 @@ class Input:
         return self._mouse_motion
 
     def mouse_pos(self):
-        return pygame.mouse.get_pos()
+        return Vec2(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1])
 
     def mouse_rel(self):
         return pygame.mouse.get_rel()

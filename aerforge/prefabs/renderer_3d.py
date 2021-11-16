@@ -1,18 +1,6 @@
 from aerforge import *
 from math import *
 
-class Vec3:
-    def __init__(self, arg1, arg2 = None, arg3 = None):
-        if isinstance(arg1, tuple):
-            self.x = arg1[0]
-            self.y = arg1[1]
-            self.z = arg1[2]
-
-        else:
-            self.x = arg1
-            self.y = arg2
-            self.z = arg3
-
 class Entity3D:
     def __init__(self, verts, faces, colors, pos = Vec3(0, 0, 0), rot = Vec2(0, 0)):
         self.verts = verts
@@ -31,9 +19,8 @@ class Cube(Entity3D):
             rot = rot
         )
 
-        if color != None:
-            for i in self.faces:
-                self.colors.append(color)
+        for i in self.faces:
+            self.colors.append(color)
 
 class Camera:
     def __init__(self, window, pos = Vec3(0, 0, 0), rot = Vec2(0, 0)):

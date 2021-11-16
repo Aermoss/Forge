@@ -5,6 +5,7 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 from aerforge.shape import *
 
 from aerforge.vec2 import Vec2
+from aerforge.vec3 import Vec3
 from aerforge.color import Color
 from aerforge.main import Forge, init
 from aerforge.input import Input

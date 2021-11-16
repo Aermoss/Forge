@@ -114,6 +114,16 @@ class Gun:
         
         return False
 
+    def hit(self, entity, destroy_bullet = False):
+        for pos_x, pos_y, speed_x, speed_y in self.all_bullets:
+            if entity.hit(Vec2(pos_x, pos_y)):
+                if destroy_bullet:
+                    self.all_bullets.pop(self.all_bullets.index([pos_x, pos_y, speed_x, speed_y]))
+
+                return True
+
+        return False
+
     def center(self):
         self.x = self.window.width / 2
         self.y = self.window.height / 2

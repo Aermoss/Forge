@@ -11,3 +11,7 @@ class Vec2:
         else:
             self.x = arg1
             self.y = arg2
+
+    def lerp(self, vec2, value):
+        self.x = vec2.x * (1 - value) + self.x * value
+        self.y = vec2.y * (1 - value) + self.y * value

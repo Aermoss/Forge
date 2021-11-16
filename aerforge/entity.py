@@ -3,7 +3,7 @@ import pygame
 from aerforge import *
 
 class Entity(pygame.Rect):
-    def __init__(self, window, shape = Rect, width = 200, height = 200, x = 0, y = 0, color = Color(240, 240, 240), alpha = 255, fill = True, scripts = [], add_to_objects = True):
+    def __init__(self, window, shape = Rect, width = 200, height = 200, x = 0, y = 0, color = Color(240, 240, 240), alpha = 255, fill = True, add_to_objects = True):
         self.window = window
 
         self.width = width
@@ -19,7 +19,7 @@ class Entity(pygame.Rect):
         self.shape = shape
         self.color = color
 
-        self.scripts = scripts
+        self.scripts = []
 
         self.destroyed = False
 
@@ -35,7 +35,7 @@ class Entity(pygame.Rect):
     def draw(self):
         if not self.destroyed:
             if self.shape == Rect:
-                if self.alpha != 0:
+                if self.alpha != 255:
                     shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
                     pygame.draw.rect(shape_surf, (self.color.r, self.color.g, self.color.b, self.alpha), shape_surf.get_rect(), self.fill)
                     self.window.window.blit(shape_surf, self)
@@ -44,7 +44,7 @@ class Entity(pygame.Rect):
                     pygame.draw.rect(self.window.window, self.color, self, self.fill)
 
             elif self.shape == Circle:
-                if self.alpha != 0:
+                if self.alpha != 255:
                     shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
                     pygame.draw.ellipse(shape_surf, (self.color.r, self.color.g, self.color.b, self.alpha), shape_surf.get_rect(), self.fill)
                     self.window.window.blit(shape_surf, self)

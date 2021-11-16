@@ -3,7 +3,7 @@ import pygame
 from aerforge import *
 
 class Sprite(pygame.Rect):
-    def __init__(self, window, file, alpha = 255, width = 200, height = 200, x = 0, y = 0, scripts = [], add_to_objects = True):
+    def __init__(self, window, file, alpha = 255, width = 200, height = 200, x = 0, y = 0, add_to_objects = True):
         self.window = window
 
         self.x = x
@@ -22,7 +22,7 @@ class Sprite(pygame.Rect):
 
         self.angle = 0
 
-        self.scripts = scripts
+        self.scripts = []
 
         self.destroyed = False
         self.rotated = False

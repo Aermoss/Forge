@@ -4,7 +4,7 @@ import cv2
 from aerforge.error import ForgeError
 
 class Movie:
-    def __init__(self, window, file, width = 200, height = 200, x = 0, y = 0, scripts = [], add_to_objects = True):
+    def __init__(self, window, file, width = 200, height = 200, x = 0, y = 0, add_to_objects = True):
         self.window = window
 
         self.file = file
@@ -21,7 +21,7 @@ class Movie:
         if not success:
             raise ForgeError("Failed to load video")
 
-        self.scripts = scripts
+        self.scripts = []
 
         self.destroyed = False
 

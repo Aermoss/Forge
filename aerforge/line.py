@@ -3,13 +3,13 @@ import pygame
 from aerforge import *
 
 class Line:
-    def __init__(self, window, points, color = Color(240, 240, 240), scripts = [], add_to_objects = True):
+    def __init__(self, window, points, color = Color(240, 240, 240), add_to_objects = True):
         self.window = window
         
         self.color = color
         self.points = points
 
-        self.scripts = scripts
+        self.scripts = []
 
         self.destroyed = False
 
