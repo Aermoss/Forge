@@ -13,3 +13,4 @@ from aerforge.prefabs.camera import Camera
 from aerforge.prefabs.cursor import Cursor
 from aerforge.prefabs.exit_button import ExitButton
 from aerforge.prefabs.updater import Updater
+from aerforge.prefabs.health_bar import HealthBar
