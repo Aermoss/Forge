@@ -61,10 +61,10 @@ class Gravity:
 if __name__ == "__main__":
     forge = Forge()
 
-    cube = Entity(window = forge, shape = Rect, width = 50, height = 50, color = Color(50, 50, 100))
+    cube = Entity(window = forge, shape = shape.Rect, width = 50, height = 50, color = color.Color(50, 50, 100))
     cube.center()
 
-    ground = Entity(window = forge, shape = Rect, width = 1200, height = 50, color = Color(100, 100, 100))
+    ground = Entity(window = forge, shape = shape.Rect, width = 1200, height = 50, color = color.Color(100, 100, 100))
     ground.y = 550
 
     gravity = Gravity(cube)

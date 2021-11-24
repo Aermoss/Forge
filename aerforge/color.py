@@ -6,3 +6,9 @@ class Color(pygame.Color):
         self.g = g
         self.b = b
         self.a = a
+
+Red = Color(240, 0, 0)
+Green = Color(0, 240, 0)
+Blue = Color(0, 0, 240)
+White = Color(240, 240, 240)
+Black = Color(40, 40, 40)

@@ -100,7 +100,7 @@ class Gun:
                 self.all_bullets.pop(self.all_bullets.index([pos_x, pos_y, speed_x, speed_y]))
 
             else:
-                self.window.draw(shape = Rect, width = 10, height = 10, x = int(pos_x), y = int(pos_y))
+                self.window.draw(shape = shape.Rect, width = 10, height = 10, x = int(pos_x), y = int(pos_y))
 
     def is_reloading(self):
         if self.reloading:

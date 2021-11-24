@@ -35,7 +35,7 @@ if __name__ == "__main__":
 
     forge = Forge()
 
-    cube = Entity(forge, shape = Rect, width = 200, height = 200)
+    cube = Entity(forge, shape = shape.Rect, width = 200, height = 200)
     cube.center()
 
     draggable = Draggable(forge, cube, True)

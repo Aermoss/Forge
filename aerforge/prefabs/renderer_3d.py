@@ -2,16 +2,19 @@ from aerforge import *
 from math import *
 
 class Entity3D:
-    def __init__(self, verts, faces, colors, pos = Vec3(0, 0, 0), rot = Vec2(0, 0)):
+    def __init__(self, renderer, verts, faces, colors, pos = Vec3(0, 0, 0), rot = Vec2(0, 0)):
         self.verts = verts
         self.faces = faces
         self.colors = colors
         self.pos = pos
         self.rot = rot
 
+        renderer.objects.append(self)
+
 class Cube(Entity3D):
-    def __init__(self, scale = 1, pos = Vec3(0, 0, 0), rot = Vec2(0, 0), color = Color(240, 240, 240)):
+    def __init__(self, renderer, scale = 1, pos = Vec3(0, 0, 0), rot = Vec2(0, 0), color = color.Color(240, 240, 240)):
         super().__init__(
+            renderer = renderer,
             verts = [(-1 * scale, -1 * scale, -1 * scale), (1 * scale, -1 * scale, -1 * scale), (1 * scale, 1 * scale, -1 * scale), (-1 * scale, 1 * scale, -1 * scale), (-1 * scale, -1 * scale, 1 * scale), (1 * scale, -1 * scale, 1 * scale), (1 * scale, 1 * scale, 1 * scale), (-1 * scale, 1 * scale, 1 * scale)],
             faces = [(0, 1, 2, 3), (4, 5, 6, 7), (0, 1, 5, 4), (2, 3, 7, 6), (0, 3, 7, 4), (1, 2, 6, 5)],
             colors = [],
@@ -101,9 +104,9 @@ class Renderer3D:
 
     def load_test_scene(self):
         self.camera.pos.z = -5
-        self.objects.append(Cube(color = Color(240, 50, 50), pos = Vec3(5, 0, 0)))
-        self.objects.append(Cube(color = Color(50, 240, 50), pos = Vec3(0, 5, 0)))
-        self.objects.append(Cube(color = Color(50, 50, 240), pos = Vec3(0, 0, 5)))
+        self.objects.append(Cube(color = color.Color(240, 50, 50), pos = Vec3(5, 0, 0)))
+        self.objects.append(Cube(color = color.Color(50, 240, 50), pos = Vec3(0, 5, 0)))
+        self.objects.append(Cube(color = color.Color(50, 50, 240), pos = Vec3(0, 0, 5)))
 
     def set_fov(self, fov):
         self.fov = fov / 180 * pi
@@ -176,7 +179,7 @@ class Renderer3D:
 
         for i in order:
             try:
-                self.window.draw(shape = Polygon, color = face_color[i], points = face_list[i])
+                self.window.draw(shape = shape.Polygon, color = face_color[i], points = face_list[i])
 
             except:
                 pass

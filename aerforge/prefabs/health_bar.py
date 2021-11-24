@@ -8,8 +8,8 @@ class HealthBar:
         self.x = x
         self.y = y
 
-        self.health_bar = Entity(self.window, width = self.health, height = 20, x = self.x + 5, y = self.y + 5, color = Color(10, 220, 10), alpha = 200)
-        self.health_bar_background = Entity(self.window, width = self.health + 10, height = 30, x = self.x, y = self.y, color = Color(40, 40, 40), alpha = 120)
+        self.health_bar = Entity(self.window, width = self.health, height = 20, x = self.x + 5, y = self.y + 5, color = color.Color(10, 220, 10), alpha = 200)
+        self.health_bar_background = Entity(self.window, width = self.health + 10, height = 30, x = self.x, y = self.y, color = color.Color(40, 40, 40), alpha = 120)
 
     def set_health(self, health):
         if health < 0:

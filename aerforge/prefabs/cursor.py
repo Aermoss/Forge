@@ -1,7 +1,7 @@
 from aerforge import *
 
 class Cursor(Entity):
-    def __init__(self, window, shape = Circle, width = 10, height = 10):
+    def __init__(self, window, shape = shape.Circle, width = 10, height = 10):
         super().__init__(
             window = window,
             shape = shape,

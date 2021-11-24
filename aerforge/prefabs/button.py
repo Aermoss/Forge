@@ -1,7 +1,7 @@
 from aerforge import *
 
 class Button(Entity):
-    def __init__(self, window, shape = Rect, width = 300, height = 100, x = 0, y = 0, color = Color(100, 100, 100), highlight_color = Color(240, 240, 240), press_color = Color(40, 40, 40)):
+    def __init__(self, window, shape = shape.Rect, width = 300, height = 100, x = 0, y = 0, color = color.Color(100, 100, 100), highlight_color = color.Color(240, 240, 240), press_color = color.Color(40, 40, 40)):
         super().__init__(
             window = window, 
             shape = shape, 

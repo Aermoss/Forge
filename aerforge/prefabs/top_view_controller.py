@@ -1,7 +1,7 @@
 from aerforge import *
 
 class TopViewController(Entity):
-    def __init__(self, window, shape = Rect, x = 0, y = 0, width = 50, height = 100, color = Color(240, 240, 240), sprint_speed = 6, walk_speed = 3, collision_tolreance = 0, not_complete_features = False):
+    def __init__(self, window, shape = shape.Rect, x = 0, y = 0, width = 50, height = 100, color = color.Color(240, 240, 240), sprint_speed = 6, walk_speed = 3, collision_tolreance = 0, not_complete_features = False):
         super().__init__(
             window = window,
             shape = shape,
@@ -75,7 +75,7 @@ class TopViewController(Entity):
 if __name__ == "__main__":
     forge = Forge()
 
-    cube = Entity(forge, Rect, width = 200, height = 200, color = Color(100, 100, 180))
+    cube = Entity(forge, shape.Rect, width = 200, height = 200, color = color.Color(100, 100, 180))
     cube.center()
 
     player = TopViewController(forge)

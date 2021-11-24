@@ -1,7 +1,7 @@
 from aerforge import *
 
 class PlatformerController(Entity):
-    def __init__(self, window, shape = Rect, x = 0, y = 0, width = 50, height = 100, color = Color(240, 240, 240), jump_force = -13, gravity = 0.6, sprint_speed = 10, walk_speed = 5):
+    def __init__(self, window, shape = shape.Rect, x = 0, y = 0, width = 50, height = 100, color = color.Color(240, 240, 240), jump_force = -13, gravity = 0.6, sprint_speed = 10, walk_speed = 5):
         super().__init__(
             window = window,
             shape = shape,
@@ -67,10 +67,10 @@ class PlatformerController(Entity):
 if __name__ == "__main__":
     forge = Forge()
 
-    ground = Entity(window = forge, shape = Rect, width = 1200, height = 100, color = (50, 50, 100))
+    ground = Entity(window = forge, shape = shape.Rect, width = 1200, height = 100, color = (50, 50, 100))
     ground.y = 500
 
-    player = PlatformerController(window = forge, color = Color(200, 120, 0))
+    player = PlatformerController(window = forge, color = color.Color(200, 120, 0))
     player.objects.append(ground)
 
     while True:

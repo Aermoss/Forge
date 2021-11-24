@@ -18,7 +18,7 @@ class ParticleGenerator:
             particle.update()
             particle.draw()
 
-    def create(self, shape = Rect, x = 0, y = 0, width = 10, height = 10, color = Color(240, 240, 240), amount = 30, max_force_x = 10, max_force_y = 10, gravity = 0, destroy_particle = True, animate = True, min_destroy_time = 0, max_destroy_time = 2, width_decrease_amount = 1, height_decrease_amount = 1):
+    def create(self, shape = shape.Rect, x = 0, y = 0, width = 10, height = 10, color = color.Color(240, 240, 240), amount = 30, max_force_x = 10, max_force_y = 10, gravity = 0, destroy_particle = True, animate = True, min_destroy_time = 0, max_destroy_time = 2, width_decrease_amount = 1, height_decrease_amount = 1):
         for i in range(amount):
             particle = Particle(window = self.window, shape = shape, width = width, height = height, x = x, y = y, color = color, destroy_particle = destroy_particle, animate = animate, destroy_time = random.uniform(min_destroy_time, max_destroy_time), width_decrease_amount = width_decrease_amount, height_decrease_amount = height_decrease_amount)
             particle.gravity.gravity = gravity
@@ -36,7 +36,7 @@ class ParticleGenerator:
         self.particles = []
 
 class Particle(Entity):
-    def __init__(self, window, shape = Rect, x = 0, y = 0, width = 10, height = 10, color = Color(240, 240, 240), destroy_particle = True, animate = True, destroy_time = 2, width_decrease_amount = 10, height_decrease_amount = 10):
+    def __init__(self, window, shape = shape.Rect, x = 0, y = 0, width = 10, height = 10, color = color.Color(240, 240, 240), destroy_particle = True, animate = True, destroy_time = 2, width_decrease_amount = 10, height_decrease_amount = 10):
         super().__init__(
             window = window,
             shape = shape,

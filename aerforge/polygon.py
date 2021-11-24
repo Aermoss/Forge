@@ -1,6 +1,6 @@
 import pygame
 
-from aerforge import *
+from aerforge.color import *
 
 class Polygon:
     def __init__(self, window, points, color = Color(240, 240, 240), add_to_objects = True):

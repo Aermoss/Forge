@@ -14,7 +14,7 @@ def init():
     pygame.init()
 
 class Forge:
-    def __init__(self, width = 1200, height = 600, background_color = Color(20, 20, 20), fullscreen = False, bordered = True, doublebuf = False, opengl = False, fps = 60):
+    def __init__(self, width = 1200, height = 600, background_color = Color(20, 20, 20), fullscreen = False, bordered = True, doublebuf = False, opengl = False, fade = True, logo = True, fps = 60):
         self.width = width
         self.height = height
         self.fps = fps
@@ -81,7 +81,13 @@ class Forge:
         self.logo = Sprite(self, self.logo, width = 380, height = 80, add_to_objects = False)
         self.logo.center()
 
-        self.window_fade = Entity(self, color = Color(0, 0, 0), width = self.width, height = self.height, add_to_objects = False)
+        if not logo:
+            self.logo.destroy()
+
+        self.fade = Entity(self, color = Color(0, 0, 0), width = self.width, height = self.height, add_to_objects = False)
+
+        if not fade:
+            self.fade.destroy()
 
         self.start_time = time.time()
 
@@ -150,14 +156,14 @@ class Forge:
 
             self.logo.draw()
 
-        if self.window_fade.get_alpha() > 0:
+        if self.fade.get_alpha() > 0:
             if self.start_time + 1 < time.time():
                 window_fade = True
 
             if window_fade:
-                self.window_fade.set_alpha(self.window_fade.get_alpha() - 0.6)
+                self.fade.set_alpha(self.fade.get_alpha() - 0.6)
 
-            self.window_fade.draw()
+            self.fade.draw()
 
         pygame.display.flip()
 
