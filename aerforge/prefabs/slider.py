@@ -1,10 +1,12 @@
 from aerforge import *
 
-class Button(Entity):
+class Head(Entity):
     def __init__(self, window,
+        min = 0,
+        max = 200,
         shape = shape.Rect,
-        width = 300,
-        height = 100,
+        width = 20,
+        height = 50,
         x = 0,
         y = 0,
         color = color.Color(30, 30, 30),
@@ -15,14 +17,6 @@ class Button(Entity):
         normal_color_lerp = 0.6,
         highlight_color_lerp = 0.6,
         press_color_lerp = 0.1,
-        text = "",
-        font_size = 24,
-        font_file = None,
-        font_name = "arial",
-        text_color = color.Color(240, 240, 240),
-        text_highlight_color = color.Color(10, 10, 10),
-        text_normal_color_lerp = 0.6,
-        text_highlight_color_lerp = 0.6
     ):
 
         super().__init__(
@@ -35,29 +29,27 @@ class Button(Entity):
             color = color,
         )
 
-        self.text = text
-        self.font_size = font_size
-        self.font_file = font_file
-        self.font_name = font_name
-        self.text_normal_color = text_color
-        self.text_highlight_color = text_highlight_color
-
-        self.text_normal_color_lerp = text_normal_color_lerp
-        self.text_highlight_color_lerp = text_highlight_color_lerp
-
-        self.text_renderer = Text(self.window, self.text, self.font_size, self.font_file, self.font_name, self.text_normal_color)
-
         self.normal_color = color
         self.highlight_color = highlight_color
         self.press_color = press_color
 
         self.state = False
+        self.slide_state = False
         self.pressed = False
         self.highlight = False
+
+        self.active_color = Vec3(color.r, color.g, color.b)
 
         self.normal_color_lerp = normal_color_lerp
         self.highlight_color_lerp = highlight_color_lerp
         self.press_color_lerp = press_color_lerp
+
+        self.min = min
+        self.max = max
+
+        self.value = 0
+
+        self.grab_pos = Vec2(0, 0)
 
         self.frame = frame
         self.frame_color = frame_color
@@ -66,20 +58,6 @@ class Button(Entity):
             self.frame = Entity(window, shape = shape, width = width, height = height, x = x, y = y, color = self.frame_color, fill = False)
 
     def update(self):
-        if self.text != "":
-            self.text_renderer.text = self.text
-            self.text_renderer.font_size = self.font_size
-            self.text_renderer.font_file = self.font_file
-
-            if self.pressed or self.highlight:
-                self.set_color(self.text_renderer, self.text_highlight_color, self.text_highlight_color_lerp)
-
-            else:
-                self.set_color(self.text_renderer, self.text_normal_color, self.text_normal_color_lerp)
-
-            text = self.text_renderer.font.render(self.text_renderer.text, True, self.text_renderer.color)
-            self.text_renderer.x, self.text_renderer.y = self.x + self.width / 2 - text.get_width() / 2, self.y + self.height / 2 - text.get_height() / 2
-
         if self.frame:
             self.frame.shape, self.frame.x, self.frame.y, self.frame.width, self.frame.height, self.frame.color = self.shape, self.x, self.y, self.width, self.height, self.frame_color
 
@@ -114,6 +92,28 @@ class Button(Entity):
         else:
             self.set_color(self, self.normal_color, self.normal_color_lerp)
 
+        if self.window.input.mouse_pressed(self.window.buttons["LEFT"]):
+            if self.hit(self.window.input.mouse_pos()):
+                if not self.slide_state:
+                    mouse_pos = self.window.input.mouse_pos()
+                    self.grab_pos.x, self.grab_pos.y = self.x - mouse_pos.x, self.y - mouse_pos.y
+
+                self.slide_state = True
+
+        else:
+            self.slide_state = False
+
+        if self.slide_state:
+            self.x = self.window.input.mouse_pos().x + self.grab_pos.x
+
+        if self.x > self.max:
+            self.x = self.max
+
+        if self.x < self.min:
+            self.x = self.min
+
+        self.value = self.x - self.min
+
     def set_color(self, object, target_color, value):
         active_color = Vec3(object.color.r, object.color.g, object.color.b)
         active_color.lerp(Vec3(target_color.r, target_color.g, target_color.b), value)
@@ -125,30 +125,71 @@ class Button(Entity):
         if self.frame:
             self.frame.draw()
 
-        if self.text != "":
-            self.text_renderer.draw()
-
     def destroyall(self):
         self.destroy()
         self.frame.destroy()
-        self.text_renderer.destroy()
 
-    def is_pressed(self):
-        if self.pressed:
-            return True
+class Slider(Entity):
+    def __init__(self, window,
+        shape = shape.Rect,
+        width = 20,
+        height = 50,
+        x = 0,
+        y = 0,
+        min = 0,
+        max = 200,
+        base_width = 220,
+        base_height = 10,
+        color = color.Color(30, 30, 30),
+        highlight_color = color.Color(240, 240, 240),
+        press_color = color.Color(10, 10, 10),
+        frame = True,
+        frame_color = color.Color(240, 240, 240),
+        normal_color_lerp = 0.6,
+        highlight_color_lerp = 0.6,
+        press_color_lerp = 0.1,
+    ):
 
-        return False
+        super().__init__(
+            window = window, 
+            shape = shape, 
+            width = base_width, 
+            height = base_height,  
+            x = x, 
+            y = y,
+            color = color,
+        )
+
+        self.min = min
+        self.max = max
+
+        self.value = 0
+
+        self.head = Head(window, x + min, x + max, shape, width, height, x, y, color, highlight_color, press_color, frame, frame_color, normal_color_lerp, highlight_color_lerp, press_color_lerp)
+        
+    def update(self):
+        self.head.y = self.y - self.head.height / 2 + self.height / 2
+        self.head.min = self.x + self.min
+        self.head.max = self.x + self.max
+        self.head.update()
+        self.value = self.head.value
+
+    def drawall(self):
+        self.draw()
+        self.head.drawall()
+
+    def get_value(self):
+        return self.value
 
 if __name__ == "__main__":
     forge = Forge()
 
-    button = Button(forge)
-    button.center()
+    slider = Slider(forge)
+    slider.center()
 
     while True:
-        if button.is_pressed():
-            print("Pressed!")
-
-        button.drawall()
-        button.update()
+        print(slider.get_value())
+        
+        slider.drawall()
+        slider.update()
         forge.update()

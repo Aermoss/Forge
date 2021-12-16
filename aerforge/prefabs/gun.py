@@ -34,10 +34,10 @@ class Gun:
     def shoot(self):
         self.shooting = True
 
-        mouse_x, mouse_y = self.window.input.mouse_pos()
+        mouse = self.window.input.mouse_pos()
                     
-        distance_x = mouse_x - self.x
-        distance_y = mouse_y - self.y
+        distance_x = mouse.x - self.x
+        distance_y = mouse.y - self.y
         
         angle = math.atan2(distance_y, distance_x)
 

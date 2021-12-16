@@ -1,3 +1,5 @@
+from aerforge.vec3 import Vec3
+
 import pygame
 
 class Color(pygame.Color):
@@ -7,6 +9,11 @@ class Color(pygame.Color):
         self.b = b
         self.a = a
 
+    def lerp(self, color, value):
+        active_color = Vec3(self.r, self.g, self.b)
+        active_color.lerp(Vec3(color.r, color.g, color.b), value)
+        self.r, self.g, self.b = int(active_color.x), int(active_color.y), int(active_color.z)
+        
 Red = Color(240, 0, 0)
 Green = Color(0, 240, 0)
 Blue = Color(0, 0, 240)

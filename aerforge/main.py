@@ -14,7 +14,7 @@ def init():
     pygame.init()
 
 class Forge:
-    def __init__(self, width = 1200, height = 600, background_color = Color(20, 20, 20), fullscreen = False, bordered = True, doublebuf = False, opengl = False, fade = True, logo = True, fps = 60):
+    def __init__(self, width = 1200, height = 600, background_color = Color(20, 20, 20), fullscreen = False, frame = True, doublebuf = False, opengl = False, fade = True, logo = True, fps = 60):
         self.width = width
         self.height = height
         self.fps = fps
@@ -30,56 +30,31 @@ class Forge:
         self.dt = 0
 
         self.fullscreen = fullscreen
-        self.bordered = bordered
+        self.frame = frame
         self.opengl = opengl
         self.doublebuf = doublebuf
 
         self.path = os.path.dirname(os.path.abspath(__file__))
 
-        icon = os.path.join(self.path, "./assets/icon/icon.png")
-        icon = pygame.image.load(icon)
-        pygame.display.set_icon(icon)
+        try:
+            pygame.display.set_icon(pygame.image.load(os.path.join(self.path, "./assets/icon/icon.png")))
+
+        except:
+            pygame.display.set_icon(pygame.image.load("icon.png"))
+
         pygame.display.set_caption("Forge")
 
-        if self.fullscreen:
-            if self.opengl:
-                self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.OPENGL)
-            
-            else:
-                if self.doublebuf:
-                    self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN | pygame.DOUBLEBUF)
-
-                else:
-                    self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
-
-        else:
-            if self.opengl:
-                if not self.bordered:
-                    self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL, 32)
-
-                else:
-                    self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL)
-
-            else:
-                if self.doublebuf:
-                    if not self.bordered:
-                        self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF, 32)
-
-                    else:
-                        self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
-
-                else:
-                    if not self.bordered:
-                        self.window = pygame.display.set_mode((self.width, self.height), 32)
-
-                    else:
-                        self.window = pygame.display.set_mode((self.width, self.height))
+        self.build_window()
 
         self.window.fill(self.background_color)
 
-        self.logo = os.path.join(self.path, "./assets/logo/logo.png")
-        self.logo = Sprite(self, self.logo, width = 380, height = 80, add_to_objects = False)
-        self.logo.center()
+        try:
+            self.logo = Sprite(self, os.path.join(self.path, "./assets/logo/logo.png"), width = 380, height = 80, add_to_objects = False)
+            self.logo.center()
+
+        except:
+            self.logo = Sprite(self, "logo.png", width = 380, height = 80, add_to_objects = False)
+            self.logo.center()
 
         if not logo:
             self.logo.destroy()
@@ -142,6 +117,41 @@ class Forge:
         }
 
         self.objects = []
+
+    def build_window(self):
+        if self.fullscreen:
+            if self.opengl:
+                self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN | pygame.DOUBLEBUF | pygame.OPENGL)
+            
+            else:
+                if self.doublebuf:
+                    self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN | pygame.DOUBLEBUF)
+
+                else:
+                    self.window = pygame.display.set_mode((self.width, self.height), pygame.FULLSCREEN)
+
+        else:
+            if self.opengl:
+                if not self.frame:
+                    self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL, pygame.NOFRAME)
+
+                else:
+                    self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF | pygame.OPENGL)
+
+            else:
+                if self.doublebuf:
+                    if not self.frame:
+                        self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF, pygame.NOFRAME)
+
+                    else:
+                        self.window = pygame.display.set_mode((self.width, self.height), pygame.DOUBLEBUF)
+
+                else:
+                    if not self.frame:
+                        self.window = pygame.display.set_mode((self.width, self.height), pygame.NOFRAME)
+
+                    else:
+                        self.window = pygame.display.set_mode((self.width, self.height))
 
     def update(self):
         window_fade = False
@@ -250,6 +260,21 @@ class Forge:
 
     def set_mouse_pos(self, pos):
         pygame.mouse.set_pos(pos)
+
+    def minimize(self):
+        pygame.display.iconify()
+
+    def is_focused(self):
+        return pygame.key.get_focused()
+
+    def is_mouse_focused(self):
+        return pygame.mouse.get_focused()
+
+    def get_hwnd(self):
+        return pygame.display.get_wm_info()["window"]
+
+    def get_fonts(self):
+        return pygame.font.get_fonts()
 
     def draw(self, shape = Rect, color = Color(240, 240, 240), fill = True, x = 0, y = 0, width = 200, height = 200, points = []):
         fill = not fill

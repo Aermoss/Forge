@@ -1,7 +1,36 @@
 from aerforge import *
 
-class TextBox:
-    def __init__(self, window, shape = shape.Rect, background_color = (100, 100, 100), background_focus_color = (60, 60, 60), foreground_color = color.Color(240, 240, 240), foreground_focus_color = color.Color(240, 240, 240), text_color = color.Color(40, 40, 40), text_focus_color = color.Color(40, 40, 40), font_size = 24, font_file = None, text_x = 0, text_y = 0, background_thickness = 2, text_size_limit = 16, x = 0, y = 0, width = 200, height = 50):
+class TextBox(Entity):
+    def __init__(self, window,
+        shape = shape.Rect,
+        color = color.Color(30, 30, 30),
+        highlight_color = color.Color(240, 240, 240),
+        frame_color = color.Color(240, 240, 240),
+        frame_highlight_color = color.Color(240, 240, 240),
+        text_color = color.Color(10, 10, 10),
+        text_highlight_color = color.Color(240, 240, 240),
+        font_size = 24,
+        font_file = None,
+        font_name = "arial",
+        text_x = 0,
+        text_y = 0,
+        text_size_limit = 16,
+        x = 0,
+        y = 0,
+        width = 200,
+        height = 50
+    ):
+
+        super().__init__(
+            window = window,
+            shape = shape,
+            width = width,
+            height = height,
+            x = x,
+            y = y,
+            color = color,
+        )
+
         self.window = window
         
         self.text = ""
@@ -21,59 +50,33 @@ class TextBox:
         self.width = width
         self.height = height
 
-        self.background_thickness = background_thickness
-
         self.text_size_limit = text_size_limit
-        self.background_color = background_color
-        self.background_focus_color = background_focus_color
-        self.foreground_color = foreground_color
-        self.foreground_focus_color = foreground_focus_color
+        self.normal_color = color
+        self.highlight_color = highlight_color
+        self.frame_color = frame_color
+        self.frame_highlight_color = frame_highlight_color
         self.text_color = text_color
-        self.text_focus_color = text_focus_color
+        self.text_highlight_color = text_highlight_color
 
         self.font_size = font_size
         self.font_file = font_file
+        self.font_name = font_name
 
-        self.background = Entity(self.window, shape = shape, color = self.background_color, width = self.width, height = self.height, x = self.x, y = self.y)
-        self.foreground = Entity(self.window, shape = shape, color = self.foreground_color, width = self.width - self.background_thickness * 2, height = self.height - self.background_thickness * 2, x = self.x + self.background_thickness, y = self.y + self.background_thickness)
-        self.text_renderer = Text(self.window, text = self.text, font_file = self.font_file, font_size = self.font_size, color = self.text_color, x = self.x + 15 + self.text_x, y = self.y + (self.foreground.height / 2) + (self.font_size / 3) + self.text_y)
-
-    def draw(self):
-        self.background.draw()
-        self.foreground.draw()
-        self.text_renderer.draw()
-
-    def center(self):
-        self.x = self.window.width / 2 - self.width / 2
-        self.y = self.window.height / 2 - self.height / 2
-
-    def center_x(self):
-        self.x = self.window.width / 2 - self.width / 2
-
-    def center_y(self):
-        self.y = self.window.height / 2 - self.height / 2
-
-    def hit(self, gameobject):
-        return self.background.hit(gameobject)
-
-    def destroy(self):
-        self.background.destroy()
-        self.foreground.destroy()
-        self.text_renderer.destroy()
+        self.frame = Entity(self.window, shape = shape, color = self.frame_color, width = self.width, height = self.height, x = x, y = y, fill = False)
+        self.text_renderer = Text(self.window, text = self.text, font_file = self.font_file, font_name = self.font_name, font_size = self.font_size, color = self.text_color, x = x, y = y)
 
     def update(self):
-        self.background.x, self.background.y = self.x, self.y
-        self.background.width, self.background.height = self.width, self.height
-        self.foreground.x, self.foreground.y = self.x + self.background_thickness, self.y + self.background_thickness
-        self.foreground.width, self.foreground.height = self.width - self.background_thickness * 2, self.height - self.background_thickness * 2
-        self.text_renderer.x, self.text_renderer.y = self.x + 15 + self.text_x, self.y + (self.foreground.height / 2) - 5 + self.text_y
+        self.frame.x, self.frame.y = self.x, self.y
+        self.frame.width, self.frame.height = self.width, self.height
+        text = self.text_renderer.font.render(self.text_renderer.text, True, self.text_renderer.color)
+        self.text_renderer.x, self.text_renderer.y = self.x + self.width / 2 - text.get_width() / 2, self.y + self.height / 2 - text.get_height() / 2
 
         self.text_renderer.text = self.text
 
         if self.active:
-            self.background.color = self.background_focus_color
-            self.foreground.color = self.foreground_focus_color
-            self.text_renderer.color = self.text_focus_color
+            self.set_color(self.frame, self.frame_highlight_color, 0.6)
+            self.set_color(self, self.highlight_color, 0.6)
+            self.set_color(self.text_renderer, self.text_color, 0.6)
 
             if self.returned:
                 self.returned = False
@@ -99,20 +102,44 @@ class TextBox:
 
                 if self.window.input.key_pressed():
                     if len(self.text) < self.text_size_limit:
-                        self.text = self.text + self.window.input.key_name()
+                        self.text += self.window.input.key_name()
 
         else:
-            self.background.color = self.background_color
-            self.foreground.color = self.foreground_color
-            self.text_renderer.color = self.text_color
+            self.set_color(self.frame, self.frame_color, 0.6)
+            self.set_color(self, self.normal_color, 0.6)
+            self.set_color(self.text_renderer, self.text_highlight_color, 0.6)
 
-        if self.foreground.hit(self.window.input.mouse_pos()):
+        if self.hit(self.window.input.mouse_pos()):
             if self.window.input.mouse_pressed(self.window.buttons["LEFT"]):
                 self.active = True
 
         else:
             if self.window.input.mouse_pressed(self.window.buttons["LEFT"]):
                 self.active = False
+
+    def set_color(self, object, target_color, value):
+        active_color = Vec3(object.color.r, object.color.g, object.color.b)
+        active_color.lerp(Vec3(target_color.r, target_color.g, target_color.b), value)
+        object.color = color.Color(int(active_color.x), int(active_color.y), int(active_color.z))
+
+    def drawall(self):
+        self.draw()
+        self.frame.draw()
+        self.text_renderer.draw()
+
+    def destroyall(self):
+        self.destroy()
+        self.frame.destroy()
+        self.text_renderer.destroy()
+
+    def is_returned(self):
+        if self.returned:
+            return True
+
+        return False
+
+    def get_returned(self):
+        return self.returned_text
 
 if __name__ == "__main__":
     forge = Forge()
@@ -121,9 +148,9 @@ if __name__ == "__main__":
     text_box.center()
 
     while True:
-        if text_box.returned:
-            print(text_box.returned_text)
+        if text_box.is_returned():
+            print(text_box.get_returned())
 
         text_box.update()
-        text_box.draw()
+        text_box.drawall()
         forge.update()

@@ -6,7 +6,7 @@ from aerforge.error import *
 from aerforge.vec2 import *
 
 class Entity(pygame.Rect):
-    def __init__(self, window, shape = Rect, width = 200, height = 200, x = 0, y = 0, color = Color(240, 240, 240), alpha = 255, fill = True, add_to_objects = True):
+    def __init__(self, window, shape = Rect, width = 200, height = 200, x = 0, y = 0, color = Color(240, 240, 240), fill = True, add_to_objects = True):
         self.window = window
 
         self.width = width
@@ -14,8 +14,6 @@ class Entity(pygame.Rect):
 
         self.x = x
         self.y = y
-
-        self.alpha = alpha
 
         self.fill = not fill
 
@@ -38,18 +36,18 @@ class Entity(pygame.Rect):
     def draw(self):
         if not self.destroyed:
             if self.shape == Rect:
-                if self.alpha != 255:
+                if self.color.a != 255:
                     shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
-                    pygame.draw.rect(shape_surf, (self.color.r, self.color.g, self.color.b, self.alpha), shape_surf.get_rect(), self.fill)
+                    pygame.draw.rect(shape_surf, (self.color.r, self.color.g, self.color.b, self.color.a), shape_surf.get_rect(), self.fill)
                     self.window.window.blit(shape_surf, self)
 
                 else:
                     pygame.draw.rect(self.window.window, self.color, self, self.fill)
 
             elif self.shape == Circle:
-                if self.alpha != 255:
+                if self.color.a != 255:
                     shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
-                    pygame.draw.ellipse(shape_surf, (self.color.r, self.color.g, self.color.b, self.alpha), shape_surf.get_rect(), self.fill)
+                    pygame.draw.ellipse(shape_surf, (self.color.r, self.color.g, self.color.b, self.color.a), shape_surf.get_rect(), self.fill)
                     self.window.window.blit(shape_surf, self)
 
                 else:
@@ -64,17 +62,17 @@ class Entity(pygame.Rect):
     def get_fill(self):
         return self.fill
 
-    def set_alpha(self, alpha):
-        self.alpha = alpha
-
-    def get_alpha(self):
-        return self.alpha
-
     def set_color(self, color):
         self.color = color
 
     def get_color(self):
         return self.color
+
+    def get_alpha(self):
+        return self.color.a
+
+    def set_alpha(self, alpha):
+        self.color.a = int(alpha)
 
     def get_width(self):
         return self.width

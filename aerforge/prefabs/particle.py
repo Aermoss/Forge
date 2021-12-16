@@ -83,8 +83,8 @@ if __name__ == "__main__":
     while True:
         if forge.input.mouse_pressed():
             if state:
-                mouse_x, mouse_y = forge.input.mouse_pos()
-                particle.create(x = mouse_x, y = mouse_y)
+                mouse_pos = forge.input.mouse_pos()
+                particle.create(x = mouse_pos.x, y = mouse_pos.y)
                 state = False
 
         else:

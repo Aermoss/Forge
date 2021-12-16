@@ -104,9 +104,9 @@ class Renderer3D:
 
     def load_test_scene(self):
         self.camera.pos.z = -5
-        self.objects.append(Cube(color = color.Color(240, 50, 50), pos = Vec3(5, 0, 0)))
-        self.objects.append(Cube(color = color.Color(50, 240, 50), pos = Vec3(0, 5, 0)))
-        self.objects.append(Cube(color = color.Color(50, 50, 240), pos = Vec3(0, 0, 5)))
+        self.objects.append(Cube(self, color = color.Color(240, 50, 50), pos = Vec3(5, 0, 0)))
+        self.objects.append(Cube(self, color = color.Color(50, 240, 50), pos = Vec3(0, 5, 0)))
+        self.objects.append(Cube(self, color = color.Color(50, 50, 240), pos = Vec3(0, 0, 5)))
 
     def set_fov(self, fov):
         self.fov = fov / 180 * pi
