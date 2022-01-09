@@ -11,6 +11,6 @@ class Vec3:
             self.z = arg3
 
     def lerp(self, vec3, value):
-        self.x = vec3.x * (1 - value) + self.x * value
-        self.y = vec3.y * (1 - value) + self.y * value
-        self.z = vec3.z * (1 - value) + self.z * value
+        self.x = self.x + (vec3.x - self.x) * value
+        self.y = self.y + (vec3.y - self.y) * value
+        self.z = self.z + (vec3.z - self.z) * value

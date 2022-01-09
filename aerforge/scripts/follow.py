@@ -5,4 +5,5 @@ class Follow:
         self.entity = entity
 
     def update(self, entity):
-        entity.x, entity.y = self.entity.x, self.entity.y
+        entity.x = self.entity.x
+        entity.y = self.entity.y

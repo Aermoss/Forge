@@ -6,6 +6,5 @@ class SmoothFollow:
         self.value = value
 
     def update(self, entity):
-        entity_pos = Vec2(self.entity.x, self.entity.y)
-        entity_pos.lerp(Vec2(entity.x, entity.y), self.value)
-        entity.x, entity.y = entity_pos.x, entity_pos.y
+        entity.x = math.lerp(entity.x, self.entity.x, self.value)
+        entity.y = math.lerp(entity.y, self.entity.y, self.value)
