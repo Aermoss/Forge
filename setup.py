@@ -5,8 +5,8 @@ with open("README.md", "r", encoding = "UTF-8") as file:
  
 setup(
     name = "aerforge",
-    version = "0.1.9",
-    description = "A game engine made with SDL.",
+    version = "0.2.1",
+    description = "A game engine made with pygame.",
     long_description = long_desc,
     long_description_content_type = "text/markdown",
     url = "https://github.com/Aermoss/AerForge",
@@ -16,5 +16,5 @@ setup(
     keywords = "",
     packages = find_packages(),
     include_package_data = True,
-    install_requires = ["pygame", "opencv-python"]
+    install_requires = ["pygame", "pyinstaller"]
 )

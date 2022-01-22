@@ -23,38 +23,36 @@ class Entity(pygame.Rect):
         self.scripts = []
 
         self.destroyed = False
+        self.visible = True
 
         self.add_to_objects = add_to_objects
 
         if self.add_to_objects:
             self.window.objects.append(self)
 
-    def _update(self):
-        for script in self.scripts:
-            script.update(self)
-
     def draw(self):
         if not self.destroyed:
-            if self.shape == Rect:
-                if self.color.a != 255:
-                    shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
-                    pygame.draw.rect(shape_surf, (self.color.r, self.color.g, self.color.b, self.color.a), shape_surf.get_rect(), self.fill)
-                    self.window.window.blit(shape_surf, self)
+            if self.visible:
+                if self.shape == Rect:
+                    if self.color.a != 255:
+                        shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
+                        pygame.draw.rect(shape_surf, (self.color.r, self.color.g, self.color.b, self.color.a), shape_surf.get_rect(), self.fill)
+                        self.window.window.blit(shape_surf, self)
+
+                    else:
+                        pygame.draw.rect(self.window.window, self.color, self, self.fill)
+
+                elif self.shape == Circle:
+                    if self.color.a != 255:
+                        shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
+                        pygame.draw.ellipse(shape_surf, (self.color.r, self.color.g, self.color.b, self.color.a), shape_surf.get_rect(), self.fill)
+                        self.window.window.blit(shape_surf, self)
+
+                    else:
+                        pygame.draw.ellipse(self.window.window, self.color, self, self.fill)
 
                 else:
-                    pygame.draw.rect(self.window.window, self.color, self, self.fill)
-
-            elif self.shape == Circle:
-                if self.color.a != 255:
-                    shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
-                    pygame.draw.ellipse(shape_surf, (self.color.r, self.color.g, self.color.b, self.color.a), shape_surf.get_rect(), self.fill)
-                    self.window.window.blit(shape_surf, self)
-
-                else:
-                    pygame.draw.ellipse(self.window.window, self.color, self, self.fill)
-
-            else:
-                raise ForgeError("Invalid shape")
+                    raise ForgeError("Invalid shape")
 
     def set_fill(self, fill):
         self.fill = not fill

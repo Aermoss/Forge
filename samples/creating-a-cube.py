@@ -18,6 +18,8 @@ class Cube(Entity):
 
 cube = Cube()
 
-while True:
-    forge.drawall()
-    forge.updateall()
+@forge.update
+def update(dt):
+    pass
+
+forge.run()

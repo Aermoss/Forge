@@ -17,7 +17,6 @@ from aerforge.text import Text
 from aerforge.sprite import Sprite
 from aerforge.line import Line
 from aerforge.animation import Animation
-from aerforge.movie import Movie
 from aerforge.polygon import Polygon
 from aerforge.build import Builder
 

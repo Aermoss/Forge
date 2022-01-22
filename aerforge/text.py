@@ -35,11 +35,6 @@ class Text:
         if self.add_to_objects:
             self.window.objects.append(self)
 
-    def _update(self):
-        if not self.destroyed:
-            for script in self.scripts:
-                script.update(self)
-
     def draw(self):
         if not self.destroyed:
             rendered_text = self.font.render(self.text, True, self.color)

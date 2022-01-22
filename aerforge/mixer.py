@@ -12,11 +12,6 @@ class Mixer:
 
         self.destroyed = False
 
-    def _update(self):
-        if not self.destroyed:
-            for script in self.scripts:
-                script.update(self)
-
     def play(self, loop = 0):
         if not self.destroyed:
             self.audio.play(loop)

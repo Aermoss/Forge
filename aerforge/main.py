@@ -26,7 +26,7 @@ class Forge:
         self.destroyed = False
 
         self.clock = pygame.time.Clock()
-        self.last_time = time.time()
+        self.start_time = time.time()
         self.dt = 0
 
         self.fullscreen = fullscreen
@@ -63,8 +63,6 @@ class Forge:
 
         if not fade:
             self.fade.destroy()
-
-        self.start_time = time.time()
 
         self.input = Input()
 
@@ -117,6 +115,15 @@ class Forge:
         }
 
         self.objects = []
+        self.update_handlers = []
+        self.draw_handlers = []
+
+        self.last = 0
+        self.t = pygame.time.get_ticks()
+        self.dt = (self.t - self.last) / 1000.0
+        self.last = self.t
+        self.delta = 1.0 / self.fps
+        self.update_dt = 0
 
     def build_window(self):
         if self.fullscreen:
@@ -152,94 +159,123 @@ class Forge:
 
                     else:
                         self.window = pygame.display.set_mode((self.width, self.height))
+    
+    def _update(self, dt):
+        self.update_dt += dt
 
-    def update(self):
+        while self.update_dt > self.delta:
+            for update in self.update_handlers:
+                update(self.delta)
+
+            self.update_dt -= self.delta
+
+    def run(self):
+        animation_done = False
         window_fade = False
         logo_fade = False
 
-        if self.logo.get_alpha() > 0:
-            if self.start_time + 6 < time.time():
-                logo_fade = True
+        while True:
+            self.clock.tick(self.fps)
 
-            if logo_fade:
-                self.logo.set_alpha(self.logo.get_alpha() - 1.2)
+            self.t = pygame.time.get_ticks()
+            self.dt = (self.t - self.last) / 1000.0
+            self.last = self.t
 
-            self.logo.draw()
+            self._update(self.dt)
 
-        if self.fade.get_alpha() > 0:
-            if self.start_time + 1 < time.time():
-                window_fade = True
+            for object in self.objects:
+                if not object.destroyed:
+                    object.draw()
 
-            if window_fade:
-                self.fade.set_alpha(self.fade.get_alpha() - 0.6)
+                    for script in object.scripts:
+                        script.update(object)
 
-            self.fade.draw()
+                    try:
+                        object.update()
 
-        pygame.display.flip()
+                    except:
+                        pass
 
-        self.clock.tick(self.fps)
+            if not animation_done:
+                if self.logo.get_alpha() > 0:
+                    if self.start_time + 6 < time.time():
+                        logo_fade = True
 
-        self.dt = time.time() - self.last_time
-        self.dt = self.dt * self.fps
-        self.last_time = time.time()
+                    if logo_fade:
+                        self.logo.set_alpha(self.logo.get_alpha() - 1.2)
 
-        self.input.update()
+                    self.logo.draw()
 
-        if self.input._key_pressed:
-            self.input._key_name = ""
-            self.input._key_pressed = False
+                else:
+                    animation_done = True
 
-        if self.input._mouse_motion:
-            self.input._mouse_motion = False
+                if self.fade.get_alpha() > 0:
+                    if self.start_time + 1 < time.time():
+                        window_fade = True
 
-        if self.input._mouse_pressed:
-            self.input._mouse_pressed = False
+                    if window_fade:
+                        self.fade.set_alpha(self.fade.get_alpha() - 0.6)
 
-        if self.input._scroll_up:
-            self.input._scroll_up = False
+                    self.fade.draw()
 
-        if self.input._scroll_down:
-            self.input._scroll_down = False
+            pygame.display.flip()
 
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            self.input.update()
+
+            if self.input._key_pressed:
+                self.input._key_name = ""
+                self.input._key_pressed = False
+
+            if self.input._mouse_motion:
+                self.input._mouse_motion = False
+
+            if self.input._mouse_pressed:
+                self.input._mouse_pressed = False
+
+            if self.input._scroll_up:
+                self.input._scroll_up = False
+
+            if self.input._scroll_down:
+                self.input._scroll_down = False
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    quit()
+
+                if event.type == pygame.KEYDOWN:
+                    self.input._key_name = event.unicode
+                    self.input._key_pressed = True
+
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    self.input._mouse_pressed = True
+
+                    if event.button == 4:
+                        self.input._scroll_up = True
+
+                    if event.button == 5:
+                        self.input._scroll_down = True
+
+                if event.type == pygame.MOUSEMOTION:
+                    self.input._mouse_motion = True
+
+            self.window.fill(self.background_color)
+
+            if self.destroyed:
                 pygame.quit()
                 quit()
 
-            if event.type == pygame.KEYDOWN:
-                self.input._key_name = event.unicode
-                self.input._key_pressed = True
+    def update(self, fn):
+        self.update_handlers.append(fn)
 
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                self.input._mouse_pressed = True
+        return fn
 
-                if event.button == 4:
-                    self.input._scroll_up = True
+    def destroy(self, entity = None):
+        if entity == None:
+            self.destroyed = True
 
-                if event.button == 5:
-                    self.input._scroll_down = True
-
-            if event.type == pygame.MOUSEMOTION:
-                self.input._mouse_motion = True
-
-        self.window.fill(self.background_color)
-
-        if self.destroyed:
-            pygame.quit()
-            quit()
-
-    def updateall(self):
-        for object in self.objects:
-            object._update()
-
-        self.update()
-
-    def update_scripts(self):
-        for object in self.objects:
-            object._update()
-
-    def destroy(self):
-        self.destroyed = True
+        else:
+            entity.destroy()
 
     def get_fps(self):
         return self.clock.get_fps()

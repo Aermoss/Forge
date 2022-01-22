@@ -18,10 +18,6 @@ class Line:
         if self.add_to_objects:
             self.window.objects.append(self)
 
-    def _update(self):
-        for script in self.scripts:
-            script.update(self)
-
     def draw(self):
         if not self.destroyed:
             for point in self.points:

@@ -2,5 +2,8 @@ from aerforge import *
 
 forge = Forge()
 
-while True:
-    forge.updateall()
+@forge.update
+def update(dt):
+    pass
+
+forge.run()
