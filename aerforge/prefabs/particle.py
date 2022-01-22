@@ -70,25 +70,3 @@ class Particle(Entity):
 
                 else:
                     self.destroy()
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    particle = ParticleGenerator(forge)
-
-    counter = FpsCounter
-
-    state = False
-
-    while True:
-        if forge.input.mouse_pressed():
-            if state:
-                mouse_pos = forge.input.mouse_pos()
-                particle.create(x = mouse_pos.x, y = mouse_pos.y)
-                state = False
-
-        else:
-            state = True
-
-        particle.update()
-        forge.update()

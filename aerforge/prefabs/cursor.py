@@ -15,13 +15,3 @@ class Cursor(Entity):
 
     def update(self):
         self.x, self.y = self.window.input.mouse_pos().x - self.width / 2, self.window.input.mouse_pos().y - self.height / 2
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    cursor = Cursor(forge)
-
-    while True:
-        cursor.update()
-        cursor.draw()
-        forge.update()

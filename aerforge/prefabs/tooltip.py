@@ -33,16 +33,3 @@ class ToolTip(Entity):
         if self.object.hit(self.window.input.mouse_pos()):
             self.draw()
             self.tooltip_text.draw()
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    entity = Entity(forge, shape = shape.Rect)
-    entity.center()
-
-    tooltip = ToolTip(forge, entity, shape = shape.Rect, text = "Sword", width = 150, height = 50, font_size = 30)
-
-    while True:
-        entity.draw()
-        tooltip.update()
-        forge.update()

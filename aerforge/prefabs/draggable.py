@@ -29,16 +29,3 @@ class Draggable:
 
             else:
                 self.object.x, self.object.y = (mouse_pos.x + self.grab_pos.x, mouse_pos.y + self.grab_pos.y)
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    cube = Entity(forge, shape = shape.Rect, width = 200, height = 200)
-    cube.center()
-
-    draggable = Draggable(forge, cube)
-
-    while True:
-        cube.draw()
-        draggable.update()
-        forge.update()

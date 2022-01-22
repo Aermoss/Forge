@@ -151,24 +151,3 @@ class Gun:
 
     def get_bullet_count(self):
         return self.bullet_count
-                
-if __name__ == "__main__":
-    from aerforge.prefabs import TopViewController
-
-    forge = Forge()
-
-    player = TopViewController(forge)
-    player.center()
-
-    gun = Gun(forge)
-
-    while True:
-        gun.x = player.x + player.width / 2
-        gun.y = player.y + 15
-
-        player.update()
-        player.draw()
-        gun.update()
-        gun.draw()
-
-        forge.update()

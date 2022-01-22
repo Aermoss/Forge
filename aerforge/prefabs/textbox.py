@@ -140,17 +140,3 @@ class TextBox(Entity):
 
     def get_returned(self):
         return self.returned_text
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    text_box = TextBox(forge)
-    text_box.center()
-
-    while True:
-        if text_box.is_returned():
-            print(text_box.get_returned())
-
-        text_box.update()
-        text_box.drawall()
-        forge.update()

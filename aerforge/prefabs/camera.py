@@ -27,23 +27,3 @@ class Camera:
 
     def get_entity_pos(self, entity):
         return Vec2(entity.x - self.default[0], entity.y - self.default[1])
-
-if __name__ == "__main__":
-    from aerforge.prefabs import TopViewController
-
-    forge = Forge()
-
-    cube1 = Entity(forge, width = 100, height = 100, x = 100, y = 200)
-    cube2 = Entity(forge, width = 100, height = 100, x = 500, y = 300)
-
-    player = TopViewController(forge)
-
-    camera = Camera(forge)
-
-    while True:
-        camera.set_pos(camera.get_entity_pos(player).x + player.width / 2 - forge.width / 2, camera.get_entity_pos(player).y + player.height / 2 - forge.height / 2)
-        cube1.draw()
-        cube2.draw()
-        player.update()
-        player.draw()
-        forge.update()

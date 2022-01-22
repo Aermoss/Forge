@@ -183,15 +183,3 @@ class Renderer3D:
 
             except:
                 pass
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    renderer = Renderer3D(forge)
-    renderer.load_test_scene()
-
-    while True:
-        renderer.objects[0].pos.x += 0.01
-        renderer.draw()
-        renderer.update()
-        forge.update()

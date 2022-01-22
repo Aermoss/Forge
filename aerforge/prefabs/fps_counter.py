@@ -20,13 +20,3 @@ class FpsCounter(Text):
             self.text = str(int(self.window.get_fps()))
         else:
             self.text = str(self.window.get_fps())
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    counter = FpsCounter(forge)
-
-    while True:
-        counter.update()
-        forge.drawall()
-        forge.update()

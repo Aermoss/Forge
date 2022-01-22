@@ -138,17 +138,3 @@ class Button(Entity):
             return True
 
         return False
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    button = Button(forge)
-    button.center()
-
-    while True:
-        if button.is_pressed():
-            print("Pressed!")
-
-        button.drawall()
-        button.update()
-        forge.update()

@@ -89,13 +89,3 @@ class Window:
         self.bar.draw()
         self.exit_button.update()
         self.minimize_button.update()
-
-if __name__ == "__main__":
-    forge = Forge(fps = 75, width = 1200, height = 630, frame = False, logo = False, fade = False)
-
-    window = Window(forge, save_window_size = False, noframe = False)
-
-    while True:
-        window.update()
-        window.draw()
-        forge.updateall()

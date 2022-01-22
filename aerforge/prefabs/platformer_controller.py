@@ -63,18 +63,3 @@ class PlatformerController(Entity):
 
         if self.window.input.key_pressed(self.window.keys["D"]):
             self.x = self.x + self.speed
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    ground = Entity(window = forge, shape = shape.Rect, width = 1200, height = 100, color = (50, 50, 100))
-    ground.y = 500
-
-    player = PlatformerController(window = forge, color = color.Color(200, 120, 0))
-    player.objects.append(ground)
-
-    while True:
-        player.update()
-        player.draw()
-        ground.draw()
-        forge.update()

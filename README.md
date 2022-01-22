@@ -19,7 +19,7 @@ forge = Forge()
 @forge.update
 def update(dt):
     pass
-    
+
 forge.run()
 ```
 
@@ -48,6 +48,6 @@ cube = Cube()
 @forge.update
 def update(dt):
     pass
-    
+
 forge.run()
 ```

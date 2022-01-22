@@ -180,16 +180,3 @@ class Slider(Entity):
 
     def get_value(self):
         return self.value
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    slider = Slider(forge)
-    slider.center()
-
-    while True:
-        print(slider.get_value())
-        
-        slider.drawall()
-        slider.update()
-        forge.update()

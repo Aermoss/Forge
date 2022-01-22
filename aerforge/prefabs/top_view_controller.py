@@ -71,19 +71,3 @@ class TopViewController(Entity):
 
         if self.window.input.key_pressed(self.window.keys["D"]) and "right" not in self.hits:
             self.x = self.x + self.speed
-
-if __name__ == "__main__":
-    forge = Forge()
-
-    cube = Entity(forge, shape.Rect, width = 200, height = 200, color = color.Color(100, 100, 180))
-    cube.center()
-
-    player = TopViewController(forge)
-
-    player.objects.append(cube)
-
-    while True:
-        cube.draw()
-        player.update()
-        player.draw()
-        forge.update()
