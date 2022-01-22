@@ -16,8 +16,11 @@ from aerforge import *
 
 forge = Forge()
 
-while True:
-    forge.updateall()
+@forge.update
+def update(dt):
+    pass
+    
+forge.run()
 ```
 
 # Creating a cube
@@ -42,7 +45,9 @@ class Cube(Entity):
 
 cube = Cube()
 
-while True:
-    forge.drawall()
-    forge.updateall()
+@forge.update
+def update(dt):
+    pass
+    
+forge.run()
 ```
