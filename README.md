@@ -1,5 +1,5 @@
 # AerForge
-A game engine made with SDL.
+A game engine made with pygame.
 
 ## Getting Started
 1) Install Python
