@@ -106,7 +106,7 @@ class Sprite(pygame.Rect):
         self.image = pygame.transform.scale(self.image, size)
 
     def hit(self, entity):
-        if isinstance(entity, Vec2):
+        if isinstance(entity, math.Vec2):
             return self.collidepoint((entity.x, entity.y))
 
         else:

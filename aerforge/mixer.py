@@ -1,7 +1,8 @@
 import pygame
 
 class Mixer:
-    def __init__(self, file, volume = 1.0):
+    def __init__(self, window, file, volume = 1.0, add_to_objects = True):
+        self.window = window
         self.file = file
         self.volume = volume
 
@@ -11,6 +12,13 @@ class Mixer:
         self.scripts = []
 
         self.destroyed = False
+        self.add_to_objects = add_to_objects
+
+        if self.add_to_objects:
+            self.window.objects.append(self)
+
+    def update(self):
+        pass
 
     def play(self, loop = 0):
         if not self.destroyed:
@@ -50,5 +58,18 @@ class Mixer:
             self.play()
 
     def destroy(self):
-        self.stop()
         self.destroyed = True
+        self.stop()
+
+        if self.add_to_objects:
+            try:
+                self.window.objects.pop(self.window.objects.index(self))
+
+            except:
+                pass
+
+    def add_script(self, script):
+        self.scripts.append(script)
+
+    def remove_script(self, script):
+        self.scripts.pop(self.scripts.index(script))

@@ -19,6 +19,9 @@ class Polygon:
         if self.add_to_objects:
             self.window.objects.append(self)
 
+    def update(self):
+        pass
+
     def draw(self):
         if not self.destroyed:
             if self.visible:
