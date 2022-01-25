@@ -1,4 +1,5 @@
 from aerforge import *
+from aerforge.math import *
 from math import *
 
 class Entity3D:
