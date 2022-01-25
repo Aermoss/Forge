@@ -11,7 +11,6 @@ from aerforge.prefabs.draggable import Draggable
 from aerforge.prefabs.particle import ParticleGenerator
 from aerforge.prefabs.camera import Camera
 from aerforge.prefabs.cursor import Cursor
-from aerforge.prefabs.updater import Updater
 from aerforge.prefabs.health_bar import HealthBar
 from aerforge.prefabs.slider import Slider
 from aerforge.prefabs.window import Window

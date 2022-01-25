@@ -1,4 +1,5 @@
 from aerforge import *
+from aerforge.math import *
 
 class SmoothFollowCamera:
     def __init__(self, camera, value = 0.9):

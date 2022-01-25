@@ -1,4 +1,5 @@
 from aerforge import *
+from aerforge.math import *
 
 class Camera:
     def __init__(self, window):
