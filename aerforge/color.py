@@ -1,4 +1,4 @@
-from aerforge.vec3 import Vec3
+from aerforge.math import Vec3
 
 import pygame
 

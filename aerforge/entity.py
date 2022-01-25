@@ -3,7 +3,7 @@ import pygame
 from aerforge.shape import *
 from aerforge.color import *
 from aerforge.error import *
-from aerforge.vec2 import *
+from aerforge.math import *
 
 class Entity(pygame.Rect):
     def __init__(self, window, shape = Rect, width = 200, height = 200, x = 0, y = 0, color = Color(240, 240, 240), fill = True, add_to_objects = True):
