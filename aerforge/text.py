@@ -29,16 +29,21 @@ class Text:
         self.scripts = []
 
         self.destroyed = False
+        self.visible = True
 
         self.add_to_objects = add_to_objects
 
         if self.add_to_objects:
             self.window.objects.append(self)
 
+    def update(self):
+        pass
+
     def draw(self):
         if not self.destroyed:
-            rendered_text = self.font.render(self.text, True, self.color)
-            self.window.window.blit(rendered_text, (self.x, self.y))
+            if self.visible:
+                rendered_text = self.font.render(self.text, True, self.color)
+                self.window.window.blit(rendered_text, (self.x, self.y))
 
     def set_color(self, color):
         self.color = color

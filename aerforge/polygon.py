@@ -12,6 +12,7 @@ class Polygon:
         self.scripts = []
 
         self.destroyed = False
+        self.visible = True
 
         self.add_to_objects = add_to_objects
 
@@ -20,7 +21,8 @@ class Polygon:
 
     def draw(self):
         if not self.destroyed:
-            pygame.draw.polygon(self.window.window, self.color, self.points)
+            if self.visible:
+                pygame.draw.polygon(self.window.window, self.color, self.points)
 
     def set_color(self, color):
         self.color = color

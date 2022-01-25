@@ -12,16 +12,21 @@ class Line:
         self.scripts = []
 
         self.destroyed = False
+        self.visible = True
 
         self.add_to_objects = add_to_objects
 
         if self.add_to_objects:
             self.window.objects.append(self)
+        
+    def update(self):
+        pass
 
     def draw(self):
         if not self.destroyed:
-            for point in self.points:
-                pygame.draw.aaline(self.window.window, self.color, point[0], point[1])
+            if self.visible:
+                for point in self.points:
+                    pygame.draw.aaline(self.window.window, self.color, point[0], point[1])
 
     def set_color(self, color):
         self.color = color

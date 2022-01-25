@@ -25,6 +25,7 @@ class Sprite(pygame.Rect):
         self.scripts = []
 
         self.destroyed = False
+        self.visible = True
         self.rotated = False
 
         self.add_to_objects = add_to_objects
@@ -32,20 +33,24 @@ class Sprite(pygame.Rect):
         if self.add_to_objects:
             self.window.objects.append(self)
 
+    def update(self):
+        pass
+
     def draw(self):
         if not self.destroyed:
-            if self.angle != 0:
-                self.rotated = True
+            if self.visible:
+                if self.angle != 0:
+                    self.rotated = True
 
-            if self.rotated:
-                self.image = pygame.transform.scale(self.image, (self.width, self.height))
-                self.rotated_image = pygame.transform.rotozoom(self.image, self.angle, 1)
-                self.rotated_image_rect = self.rotated_image.get_rect(center = (self.x + self.width / 2, self.y + self.height / 2))
-                self.window.window.blit(self.rotated_image, self.rotated_image_rect)
+                if self.rotated:
+                    self.image = pygame.transform.scale(self.image, (self.width, self.height))
+                    self.rotated_image = pygame.transform.rotozoom(self.image, self.angle, 1)
+                    self.rotated_image_rect = self.rotated_image.get_rect(center = (self.x + self.width / 2, self.y + self.height / 2))
+                    self.window.window.blit(self.rotated_image, self.rotated_image_rect)
 
-            else:
-                self.image = pygame.transform.scale(self.image, (self.width, self.height))
-                self.window.window.blit(self.image, (self.x, self.y))
+                else:
+                    self.image = pygame.transform.scale(self.image, (self.width, self.height))
+                    self.window.window.blit(self.image, (self.x, self.y))
 
     def rotate(self, angle):
         self.rotated = True

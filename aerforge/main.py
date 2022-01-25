@@ -10,6 +10,8 @@ from aerforge.shape import *
 from aerforge.entity import *
 from aerforge.sprite import *
 
+import __main__
+
 def init():
     pygame.init()
 
@@ -115,15 +117,9 @@ class Forge:
         }
 
         self.objects = []
-        self.update_handlers = []
-        self.draw_handlers = []
 
-        self.last = 0
-        self.t = pygame.time.get_ticks()
-        self.dt = (self.t - self.last) / 1000.0
-        self.last = self.t
-        self.delta = 1.0 / self.fps
-        self.update_dt = 0
+        self.dt = 0
+        self.clock.tick(self.fps)
 
     def build_window(self):
         if self.fullscreen:
@@ -159,15 +155,6 @@ class Forge:
 
                     else:
                         self.window = pygame.display.set_mode((self.width, self.height))
-    
-    def _update(self, dt):
-        self.update_dt += dt
-
-        while self.update_dt > self.delta:
-            for update in self.update_handlers:
-                update(self.delta)
-
-            self.update_dt -= self.delta
 
     def run(self):
         animation_done = False
@@ -175,26 +162,22 @@ class Forge:
         logo_fade = False
 
         while True:
-            self.clock.tick(self.fps)
+            self.dt = self.clock.tick(self.fps) / 1000.0
 
-            self.t = pygame.time.get_ticks()
-            self.dt = (self.t - self.last) / 1000.0
-            self.last = self.t
-
-            self._update(self.dt)
+            if hasattr(__main__, "update") and __main__.update:
+                __main__.update()
 
             for object in self.objects:
                 if not object.destroyed:
-                    object.draw()
+                    if object.visible:
+                        object.draw()
 
                     for script in object.scripts:
-                        script.update(object)
+                        if hasattr(script, "update") and script.update:
+                            script.update(object)
 
-                    try:
+                    if hasattr(object, "update") and object.update:
                         object.update()
-
-                    except:
-                        pass
 
             if not animation_done:
                 if self.logo.get_alpha() > 0:
@@ -265,11 +248,6 @@ class Forge:
                 pygame.quit()
                 quit()
 
-    def update(self, fn):
-        self.update_handlers.append(fn)
-
-        return fn
-
     def destroy(self, entity = None):
         if entity == None:
             self.destroyed = True
@@ -279,10 +257,6 @@ class Forge:
 
     def get_fps(self):
         return self.clock.get_fps()
-
-    def drawall(self):
-        for i in self.objects:
-            i.draw()
 
     def destroyall(self):
         for i in self.objects:
