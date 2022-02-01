@@ -113,13 +113,16 @@ class Forge:
 
         self.buttons = {
             "LEFT" : 0, "MIDDLE" : 1, "RIGHT" : 2,
-            "SCROLLUP" : 3, "SCROLLDOWN" : 4,
         }
 
         self.objects = []
+        self.functions = {}
 
         self.dt = 0
         self.clock.tick(self.fps)
+
+    def event(self, func):
+        self.functions[func.__name__] = func
 
     def build_window(self):
         if self.fullscreen:
@@ -164,13 +167,17 @@ class Forge:
         while True:
             self.dt = self.clock.tick(self.fps) / 1000.0
 
-            if hasattr(__main__, "update") and __main__.update:
-                __main__.update()
+            if "update" in self.functions:
+                self.functions["update"]()
+
+            if "draw" in self.functions:
+                self.functions["draw"]()
 
             for object in self.objects:
                 if not object.destroyed:
-                    if object.visible:
-                        object.draw()
+                    if hasattr(object, "visible"):
+                        if object.visible:
+                            object.draw()
 
                     for script in object.scripts:
                         if hasattr(script, "update") and script.update:
@@ -205,48 +212,18 @@ class Forge:
 
             self.input.update()
 
-            if self.input._key_pressed:
-                self.input._key_name = ""
-                self.input._key_pressed = False
-
-            if self.input._mouse_motion:
-                self.input._mouse_motion = False
-
-            if self.input._mouse_pressed:
-                self.input._mouse_pressed = False
-
-            if self.input._scroll_up:
-                self.input._scroll_up = False
-
-            if self.input._scroll_down:
-                self.input._scroll_down = False
-
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
-                    pygame.quit()
-                    quit()
-
-                if event.type == pygame.KEYDOWN:
-                    self.input._key_name = event.unicode
-                    self.input._key_pressed = True
-
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    self.input._mouse_pressed = True
-
-                    if event.button == 4:
-                        self.input._scroll_up = True
-
-                    if event.button == 5:
-                        self.input._scroll_down = True
-
-                if event.type == pygame.MOUSEMOTION:
-                    self.input._mouse_motion = True
+                    self.destroyed = True
 
             self.window.fill(self.background_color)
 
             if self.destroyed:
+                if "on_quit" in self.functions:
+                    self.functions["on_quit"]()
+
                 pygame.quit()
-                quit()
+                exit()
 
     def destroy(self, entity = None):
         if entity == None:

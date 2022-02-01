@@ -16,6 +16,7 @@ from aerforge import *
 
 forge = Forge()
 
+@forge.event
 def update():
     pass
 
@@ -44,6 +45,7 @@ class Cube(Entity):
 
 cube = Cube()
 
+@forge.event
 def update():
     pass
 
