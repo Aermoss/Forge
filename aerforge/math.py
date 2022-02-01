@@ -1,37 +1,28 @@
+from aerforge import color
+
 def lerp(a, b, t):
-    return a + (b - a) * t
+    if isinstance(a, int) or isinstance(a, float):
+        return a + (b - a) * t
+
+    elif isinstance(a, Vec2):
+        return Vec3(lerp(a.x, b.x, t), lerp(a.y, b.y, t))
+
+    elif isinstance(a, Vec3):
+        return Vec3(lerp(a.x, b.x, t), lerp(a.y, b.y, t), lerp(a.z, b.z, t))
+
+    elif isinstance(a, color.Color):
+        return color.Color(lerp(a.r, b.r, t), lerp(a.g, b.g, t), lerp(a.b, b.b, t), lerp(a.a, b.a, t))
 
 class Vec2:
-    def __init__(self, arg1, arg2 = None):
-        if isinstance(arg1, tuple):
-            self.x = arg1[0]
-            self.y = arg1[1]
+    def __init__(self, x, y):
+        self.x, self.y = x, y
 
-        if isinstance(arg1, Vec2):
-            self.x = arg1.x
-            self.y = arg1.y
-
-        else:
-            self.x = arg1
-            self.y = arg2
-
-    def lerp(self, vec2, value):
-        self.x = self.x + (vec2.x - self.x) * value
-        self.y = self.y + (vec2.y - self.y) * value
+    def get(self):
+        return (self.x, self.y)
 
 class Vec3:
-    def __init__(self, arg1, arg2 = None, arg3 = None):
-        if isinstance(arg1, tuple):
-            self.x = arg1[0]
-            self.y = arg1[1]
-            self.z = arg1[2]
+    def __init__(self, x, y, z):
+        self.x, self.y, self.z = x, y, z
 
-        else:
-            self.x = arg1
-            self.y = arg2
-            self.z = arg3
-
-    def lerp(self, vec3, value):
-        self.x = self.x + (vec3.x - self.x) * value
-        self.y = self.y + (vec3.y - self.y) * value
-        self.z = self.z + (vec3.z - self.z) * value
+    def get(self):
+        return (self.x, self.y, self.z)

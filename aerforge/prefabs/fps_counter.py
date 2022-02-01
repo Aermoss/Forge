@@ -18,5 +18,6 @@ class FpsCounter(Text):
     def update(self):
         if self.get_integer:
             self.text = str(int(self.window.get_fps()))
+            
         else:
             self.text = str(self.window.get_fps())

@@ -1,7 +1,7 @@
 from aerforge import *
 
 class TopViewController(Entity):
-    def __init__(self, window, shape = shape.Rect, x = 0, y = 0, width = 50, height = 100, color = color.Color(240, 240, 240), sprint_speed = 6, walk_speed = 3, collision_tolreance = 0, not_complete_features = False):
+    def __init__(self, window, shape = shape.Rect, x = 0, y = 0, width = 50, height = 100, color = color.Color(240, 240, 240), sprint_speed = 6, walk_speed = 3):
         super().__init__(
             window = window,
             shape = shape,
@@ -12,62 +12,25 @@ class TopViewController(Entity):
             color = color,
         )
 
-        self.objects = []
-
-        self.hits = []
-
-        self.collision_tolreance = collision_tolreance
-        self.not_complete_features = not_complete_features
-
         self.speed = 0
         self.sprint_speed = sprint_speed
         self.walk_speed = walk_speed
 
     def update(self):
-        self.hits = []
-
-        for i in self.objects:
-            self.hits.append(self.hit2(i, self.collision_tolreance))
-
-            if self.hit2(i) == "top":
-                self.y = i.y + i.height
-
-            if self.hit2(i) == "bottom":
-                self.y = i.y - self.height
-
-            if self.hit2(i) == "left":
-                self.x = i.x + i.width
-
-            if self.hit2(i) == "right":
-                self.x = i.x - self.width
-
-            if self.not_complete_features:
-                if self.hit2(i) == "unknown":
-                    if (self.y + (self.height / 2)) < (i.y + (i.height / 2)):
-                        self.y = i.y - self.height
-                
-                    if (self.y + (self.height / 2)) > (i.y + (i.height / 2)):
-                        self.y = i.y + i.height
-                
-                    if (self.x + (self.width / 2)) < (i.x + (i.width / 2)):
-                        self.x = i.x - self.width
-                
-                    if (self.x + (self.width / 2)) > (i.x + (i.width / 2)):
-                        self.x = i.x + i.width
-
         if self.window.input.key_pressed(self.window.keys["LSHIFT"]):
             self.speed = self.sprint_speed
+
         else:
             self.speed = self.walk_speed
 
-        if self.window.input.key_pressed(self.window.keys["W"]) and "top" not in self.hits:
+        if self.window.input.key_pressed(self.window.keys["W"]):
             self.y = self.y - self.speed
 
-        if self.window.input.key_pressed(self.window.keys["S"]) and "bottom" not in self.hits:
+        if self.window.input.key_pressed(self.window.keys["S"]):
             self.y = self.y + self.speed
 
-        if self.window.input.key_pressed(self.window.keys["A"]) and "left" not in self.hits:
+        if self.window.input.key_pressed(self.window.keys["A"]):
             self.x = self.x - self.speed
 
-        if self.window.input.key_pressed(self.window.keys["D"]) and "right" not in self.hits:
+        if self.window.input.key_pressed(self.window.keys["D"]):
             self.x = self.x + self.speed

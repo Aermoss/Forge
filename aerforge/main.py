@@ -1,7 +1,9 @@
-import pygame
+import os
+
+os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
 import time
-import os
+import pygame
 
 from aerforge.input import *
 from aerforge.error import *
@@ -48,7 +50,7 @@ class Forge:
 
         self.build_window()
 
-        self.window.fill(self.background_color)
+        self.window.fill(self.background_color.get())
 
         try:
             self.logo = Sprite(self, os.path.join(self.path, "./assets/logo/logo.png"), width = 380, height = 80, add_to_objects = False)
@@ -216,7 +218,7 @@ class Forge:
                 if event.type == pygame.QUIT:
                     self.destroyed = True
 
-            self.window.fill(self.background_color)
+            self.window.fill(self.background_color.get())
 
             if self.destroyed:
                 if "on_quit" in self.functions:
@@ -267,17 +269,17 @@ class Forge:
         fill = not fill
         
         if shape == Rect:
-            pygame.draw.rect(self.window, color, (x, y, width, height), fill)
+            pygame.draw.rect(self.window, color.get(), (x, y, width, height), fill)
 
         elif shape == Circle:
-            pygame.draw.ellipse(self.window, color, (x, y, width, height), fill)
+            pygame.draw.ellipse(self.window, color.get(), (x, y, width, height), fill)
 
         elif shape == Polygon:
-            pygame.draw.polygon(self.window, color, points, fill)
+            pygame.draw.polygon(self.window, color.get(), points, fill)
 
         elif shape == Line:
             for point in points:
-                pygame.draw.aaline(self.window, color, point[0], point[1])
+                pygame.draw.aaline(self.window, color.get(), point[0], point[1])
 
         else:
             raise ForgeError("Invalid shape")

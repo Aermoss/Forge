@@ -1,7 +1,3 @@
-import os
-
-os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
-
 import aerforge.shape as shape
 import aerforge.color as color
 import aerforge.math as math

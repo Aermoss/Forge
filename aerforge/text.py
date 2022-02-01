@@ -42,7 +42,7 @@ class Text:
     def draw(self):
         if not self.destroyed:
             if self.visible:
-                rendered_text = self.font.render(self.text, True, self.color)
+                rendered_text = self.font.render(self.text, True, self.color.get())
                 self.window.window.blit(rendered_text, (self.x, self.y))
 
     def set_color(self, color):

@@ -16,14 +16,6 @@ class Button(Entity):
         normal_color_lerp = 0.6,
         highlight_color_lerp = 0.6,
         press_color_lerp = 0.1,
-        text = "",
-        font_size = 24,
-        font_file = None,
-        font_name = "arial",
-        text_color = color.Color(240, 240, 240),
-        text_highlight_color = color.Color(10, 10, 10),
-        text_normal_color_lerp = 0.6,
-        text_highlight_color_lerp = 0.6
     ):
 
         super().__init__(
@@ -35,18 +27,6 @@ class Button(Entity):
             y = y,
             color = color,
         )
-
-        self.text = text
-        self.font_size = font_size
-        self.font_file = font_file
-        self.font_name = font_name
-        self.text_normal_color = text_color
-        self.text_highlight_color = text_highlight_color
-
-        self.text_normal_color_lerp = text_normal_color_lerp
-        self.text_highlight_color_lerp = text_highlight_color_lerp
-
-        self.text_renderer = Text(self.window, self.text, self.font_size, self.font_file, self.font_name, self.text_normal_color)
 
         self.normal_color = color
         self.highlight_color = highlight_color
@@ -67,20 +47,6 @@ class Button(Entity):
             self.frame = Entity(window, shape = shape, width = width, height = height, x = x, y = y, color = self.frame_color, fill = False)
 
     def update(self):
-        if self.text != "":
-            self.text_renderer.text = self.text
-            self.text_renderer.font_size = self.font_size
-            self.text_renderer.font_file = self.font_file
-
-            if self.pressed or self.highlight:
-                self.set_color(self.text_renderer, self.text_highlight_color, self.text_highlight_color_lerp)
-
-            else:
-                self.set_color(self.text_renderer, self.text_normal_color, self.text_normal_color_lerp)
-
-            text = self.text_renderer.font.render(self.text_renderer.text, True, self.text_renderer.color)
-            self.text_renderer.x, self.text_renderer.y = self.x + self.width / 2 - text.get_width() / 2, self.y + self.height / 2 - text.get_height() / 2
-
         if self.frame:
             self.frame.shape, self.frame.x, self.frame.y, self.frame.width, self.frame.height, self.frame.color = self.shape, self.x, self.y, self.width, self.height, self.frame_color
 
@@ -116,18 +82,13 @@ class Button(Entity):
             self.set_color(self, self.normal_color, self.normal_color_lerp)
 
     def set_color(self, object, target_color, value):
-        active_color = Vec3(object.color.r, object.color.g, object.color.b)
-        active_color.lerp(Vec3(target_color.r, target_color.g, target_color.b), value)
-        object.color = color.Color(int(active_color.x), int(active_color.y), int(active_color.z))
+        object.color = math.lerp(object.color, target_color, value)
 
     def drawall(self):
         self.draw()
 
         if self.frame:
             self.frame.draw()
-
-        if self.text != "":
-            self.text_renderer.draw()
 
     def destroyall(self):
         self.destroy()
@@ -139,3 +100,13 @@ class Button(Entity):
             return True
 
         return False
+
+if __name__ == "__main__":
+    from aerforge import *
+
+    forge = Forge()
+
+    button = Button(forge)
+    button.center()
+
+    forge.run()

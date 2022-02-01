@@ -55,6 +55,7 @@ class PlatformerController(Entity):
 
         if self.window.input.key_pressed(self.window.keys["LSHIFT"]):
             self.speed = self.sprint_speed
+            
         else:
             self.speed = self.walk_speed
 

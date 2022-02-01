@@ -26,7 +26,7 @@ class Line:
         if not self.destroyed:
             if self.visible:
                 for point in self.points:
-                    pygame.draw.aaline(self.window.window, self.color, point[0], point[1])
+                    pygame.draw.aaline(self.window.window, self.color.get(), point[0], point[1])
 
     def set_color(self, color):
         self.color = color

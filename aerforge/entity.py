@@ -39,20 +39,20 @@ class Entity(pygame.Rect):
                 if self.shape == Rect:
                     if self.color.a != 255:
                         shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
-                        pygame.draw.rect(shape_surf, (self.color.r, self.color.g, self.color.b, self.color.a), shape_surf.get_rect(), self.fill)
+                        pygame.draw.rect(shape_surf, self.color.get(), shape_surf.get_rect(), self.fill)
                         self.window.window.blit(shape_surf, self)
 
                     else:
-                        pygame.draw.rect(self.window.window, self.color, self, self.fill)
+                        pygame.draw.rect(self.window.window, self.color.get(), self, self.fill)
 
                 elif self.shape == Circle:
                     if self.color.a != 255:
                         shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
-                        pygame.draw.ellipse(shape_surf, (self.color.r, self.color.g, self.color.b, self.color.a), shape_surf.get_rect(), self.fill)
+                        pygame.draw.ellipse(shape_surf, self.color.get(), shape_surf.get_rect(), self.fill)
                         self.window.window.blit(shape_surf, self)
 
                     else:
-                        pygame.draw.ellipse(self.window.window, self.color, self, self.fill)
+                        pygame.draw.ellipse(self.window.window, self.color.get(), self, self.fill)
 
                 else:
                     raise ForgeError("Invalid shape")

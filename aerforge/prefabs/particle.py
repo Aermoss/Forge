@@ -10,24 +10,12 @@ class ParticleGenerator:
 
         self.particles = []
 
-    def update(self):
-        for particle in self.particles:
-            if particle.destroyed:
-                self.particles.pop(self.particles.index(particle))
-
-            particle.update()
-            particle.draw()
-
     def create(self, shape = shape.Rect, x = 0, y = 0, width = 10, height = 10, color = color.Color(240, 240, 240), amount = 30, max_force_x = 10, max_force_y = 10, gravity = 0, destroy_particle = True, animate = True, min_destroy_time = 0, max_destroy_time = 2, width_decrease_amount = 1, height_decrease_amount = 1):
         for i in range(amount):
             particle = Particle(window = self.window, shape = shape, width = width, height = height, x = x, y = y, color = color, destroy_particle = destroy_particle, animate = animate, destroy_time = random.uniform(min_destroy_time, max_destroy_time), width_decrease_amount = width_decrease_amount, height_decrease_amount = height_decrease_amount)
             particle.gravity.gravity = gravity
             particle.gravity.force(random.randint(-max_force_x, max_force_x), random.randint(-max_force_y, max_force_y))
             self.particles.append(particle)
-
-    def center(self):
-        for particle in self.particles:
-            particle.center()
 
     def destroy(self):
         for particle in self.particles:

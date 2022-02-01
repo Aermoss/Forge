@@ -25,7 +25,7 @@ class Polygon:
     def draw(self):
         if not self.destroyed:
             if self.visible:
-                pygame.draw.polygon(self.window.window, self.color, self.points)
+                pygame.draw.polygon(self.window.window, self.color.get(), self.points)
 
     def set_color(self, color):
         self.color = color
