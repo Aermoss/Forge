@@ -38,8 +38,8 @@ class Camera:
         self.speed = 0
         self.mouse_sensivity = 1
 
-        self.window.set_mouse_visible(False)
-        self.window.set_mouse_lock(True)
+        self.window.input.set_mouse_visible(False)
+        self.window.input.set_mouse_lock(True)
 
     def update_rot(self, x, y):
         x, y = (x * self.mouse_sensivity, y * self.mouse_sensivity)
@@ -98,9 +98,9 @@ class Renderer3D:
         self.proj_x = (self.window.width / 2) / tan(self.fov / 2) / (self.window.width / self.window.height)
 
     def update(self):
-        x, y = self.window.input.mouse_rel()
+        rel = self.window.input.mouse_rel()
 
-        self.camera.update_rot(x, y)
+        self.camera.update_rot(rel.x, rel.y)
         self.camera.update_pos()
 
     def load_test_scene(self):

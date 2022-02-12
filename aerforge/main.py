@@ -4,6 +4,7 @@ os.environ["PYGAME_HIDE_SUPPORT_PROMPT"] = "hide"
 
 import time
 import pygame
+import sys
 
 from aerforge.input import *
 from aerforge.error import *
@@ -11,6 +12,7 @@ from aerforge.color import *
 from aerforge.shape import *
 from aerforge.entity import *
 from aerforge.sprite import *
+from aerforge.logo import *
 
 import __main__
 
@@ -52,21 +54,13 @@ class Forge:
 
         self.window.fill(self.background_color.get())
 
-        try:
-            self.logo = Sprite(self, os.path.join(self.path, "./assets/logo/logo.png"), width = 380, height = 80, add_to_objects = False)
-            self.logo.center()
-
-        except:
-            self.logo = Sprite(self, "logo.png", width = 380, height = 80, add_to_objects = False)
-            self.logo.center()
+        self.logo = Logo(self)
 
         if not logo:
-            self.logo.destroy()
-
-        self.fade = Entity(self, color = Color(0, 0, 0), width = self.width, height = self.height, add_to_objects = False)
+            self.logo.logo.destroy()
 
         if not fade:
-            self.fade.destroy()
+            self.logo.fade.destroy()
 
         self.input = Input()
 
@@ -162,9 +156,7 @@ class Forge:
                         self.window = pygame.display.set_mode((self.width, self.height))
 
     def run(self):
-        animation_done = False
-        window_fade = False
-        logo_fade = False
+        key = ""
 
         while True:
             self.dt = self.clock.tick(self.fps) / 1000.0
@@ -185,30 +177,23 @@ class Forge:
                         if hasattr(script, "update") and script.update:
                             script.update(object)
 
+                        if hasattr(script, "input") and object.input:
+                            if self.input.key_pressed():
+                                if self.input.get_pressed() != "":
+                                    key = self.input.get_pressed()
+                                    script.input(key)
+
                     if hasattr(object, "update") and object.update:
                         object.update()
 
-            if not animation_done:
-                if self.logo.get_alpha() > 0:
-                    if self.start_time + 6 < time.time():
-                        logo_fade = True
+                    if hasattr(object, "input") and object.input:
+                        if self.input.key_pressed():
+                            if self.input.get_pressed() != "":
+                                key = self.input.get_pressed()
+                                object.input(key)
 
-                    if logo_fade:
-                        self.logo.set_alpha(self.logo.get_alpha() - 1.2)
-
-                    self.logo.draw()
-
-                else:
-                    animation_done = True
-
-                if self.fade.get_alpha() > 0:
-                    if self.start_time + 1 < time.time():
-                        window_fade = True
-
-                    if window_fade:
-                        self.fade.set_alpha(self.fade.get_alpha() - 0.6)
-
-                    self.fade.draw()
+            if not self.logo.destroyed:
+                self.logo.update()
 
             pygame.display.flip()
 
@@ -218,6 +203,15 @@ class Forge:
                 if event.type == pygame.QUIT:
                     self.destroyed = True
 
+                if event.type == pygame.KEYDOWN:
+                    self.input.update(event)
+
+            if self.input.key_pressed():
+                if "input" in self.functions:
+                    if self.input.get_pressed() != "":
+                        key = self.input.get_pressed()
+                        self.functions["input"](key)
+
             self.window.fill(self.background_color.get())
 
             if self.destroyed:
@@ -225,7 +219,7 @@ class Forge:
                     self.functions["on_quit"]()
 
                 pygame.quit()
-                exit()
+                sys.exit()
 
     def destroy(self, entity = None):
         if entity == None:
@@ -241,23 +235,8 @@ class Forge:
         for i in self.objects:
             i.destroy()
 
-    def set_mouse_lock(self, lock):
-        pygame.event.set_grab(lock)
-
-    def set_mouse_visible(self, visible):
-        pygame.mouse.set_visible(visible)
-
-    def set_mouse_pos(self, pos):
-        pygame.mouse.set_pos(pos)
-
     def minimize(self):
         pygame.display.iconify()
-
-    def is_focused(self):
-        return pygame.key.get_focused()
-
-    def is_mouse_focused(self):
-        return pygame.mouse.get_focused()
 
     def get_hwnd(self):
         return pygame.display.get_wm_info()["window"]

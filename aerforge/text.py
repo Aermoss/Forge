@@ -114,11 +114,11 @@ class Text:
             self.font = pygame.font.SysFont(self.font_name, self.font_size)
 
     def get_width(self):
-        rendered_text = self.font.render(self.text, True, self.color)
+        rendered_text = self.font.render(self.text, True, self.color.get())
         return rendered_text.get_width()
 
     def get_height(self):
-        rendered_text = self.font.render(self.text, True, self.color)
+        rendered_text = self.font.render(self.text, True, self.color.get())
         return rendered_text.get_height()
 
     def center(self):
