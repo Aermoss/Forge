@@ -6,6 +6,5 @@ from aerforge.prefabs.gravity import Gravity
 from aerforge.prefabs.gun import Gun
 from aerforge.prefabs.renderer_3d import Renderer3D, Camera, Entity3D, Cube
 from aerforge.prefabs.particle import ParticleGenerator
-from aerforge.prefabs.camera import Camera
 from aerforge.prefabs.cursor import Cursor
 from aerforge.prefabs.textbox import TextBox

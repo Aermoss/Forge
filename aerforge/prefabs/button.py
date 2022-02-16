@@ -57,7 +57,7 @@ class Button(Entity):
             self.highlight = False
 
         if self.hit(self.window.input.mouse_pos()):
-            if self.window.is_mouse_focused():
+            if self.window.input.is_mouse_focused():
                 self.highlight = True
 
             if self.window.input.mouse_pressed(self.window.buttons["LEFT"]):

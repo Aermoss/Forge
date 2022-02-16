@@ -1,11 +1,23 @@
 from aerforge import color
+from aerforge.error import ForgeError
 
 def lerp(a, b, value):
     if isinstance(a, int) or isinstance(a, float):
         return a + (b - a) * value
 
+    if isinstance(a, tuple):
+        if len(a) != len(b):
+            raise ForgeError("Tuple sizes doesn't match")
+
+        new = []
+
+        for i in a:
+            new.append(lerp(i, b[a.index(i)], value))
+
+        return tuple(new)
+
     elif isinstance(a, Vec2):
-        return Vec3(lerp(a.x, b.x, value), lerp(a.y, b.y, value))
+        return Vec2(lerp(a.x, b.x, value), lerp(a.y, b.y, value))
 
     elif isinstance(a, Vec3):
         return Vec3(lerp(a.x, b.x, value), lerp(a.y, b.y, value), lerp(a.z, b.z, value))
