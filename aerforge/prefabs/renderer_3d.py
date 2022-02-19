@@ -26,7 +26,7 @@ class Cube(Entity3D):
         for i in self.faces:
             self.colors.append(color)
 
-class Camera:
+class Camera3D:
     def __init__(self, window, pos = Vec3(0, 0, 0), rot = Vec2(0, 0)):
         self.window = window
 
@@ -88,7 +88,7 @@ class Camera:
 class Renderer3D:
     def __init__(self, window, fov = 90, camera_pos = Vec3(0, 0, 0)):
         self.window = window
-        self.camera = Camera(self.window, camera_pos)
+        self.camera = Camera3D(self.window, camera_pos)
 
         self.objects = []
 

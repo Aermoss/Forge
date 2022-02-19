@@ -6,8 +6,10 @@ from aerforge.error import *
 from aerforge.math import *
 
 class Entity(pygame.Rect):
-    def __init__(self, window, shape = Rect, width = 200, height = 200, x = 0, y = 0, color = Color(240, 240, 240), fill = True, add_to_objects = True):
+    def __init__(self, window, shape = Rect, width = 200, height = 200, x = 0, y = 0, color = Color(240, 240, 240), fill = True, parent = None, add_to_objects = True):
         self.window = window
+
+        self.parent = parent
 
         self.width = width
         self.height = height
@@ -36,6 +38,10 @@ class Entity(pygame.Rect):
     def draw(self):
         if not self.destroyed:
             if self.visible:
+                if self.parent != None:
+                    self.x += self.parent.x
+                    self.y += self.parent.y
+
                 if self.shape == Rect:
                     if self.color.a != 255:
                         shape_surf = pygame.Surface(pygame.Rect(self).size, pygame.SRCALPHA)
@@ -56,6 +62,10 @@ class Entity(pygame.Rect):
 
                 else:
                     raise ForgeError("Invalid shape")
+
+                if self.parent != None:
+                    self.x -= self.parent.x
+                    self.y -= self.parent.y
 
     def set_fill(self, fill):
         self.fill = not fill

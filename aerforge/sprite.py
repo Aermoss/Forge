@@ -3,8 +3,10 @@ import pygame
 from aerforge import *
 
 class Sprite(pygame.Rect):
-    def __init__(self, window, file, alpha = 255, width = 200, height = 200, x = 0, y = 0, add_to_objects = True):
+    def __init__(self, window, file, alpha = 255, width = 200, height = 200, x = 0, y = 0, parent = None, add_to_objects = True):
         self.window = window
+
+        self.parent = parent
 
         self.x = x
         self.y = y
@@ -39,6 +41,10 @@ class Sprite(pygame.Rect):
     def draw(self):
         if not self.destroyed:
             if self.visible:
+                if self.parent != None:
+                    self.x += self.parent.x
+                    self.y += self.parent.y
+
                 if self.angle != 0:
                     self.rotated = True
 
@@ -51,6 +57,10 @@ class Sprite(pygame.Rect):
                 else:
                     self.image = pygame.transform.scale(self.image, (self.width, self.height))
                     self.window.window.blit(self.image, (self.x, self.y))
+
+                if self.parent != None:
+                    self.x -= self.parent.x
+                    self.y -= self.parent.y
 
     def rotate(self, angle):
         self.rotated = True

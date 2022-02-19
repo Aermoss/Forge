@@ -93,7 +93,6 @@ class Button(Entity):
     def destroyall(self):
         self.destroy()
         self.frame.destroy()
-        self.text_renderer.destroy()
 
     def is_pressed(self):
         if self.pressed:

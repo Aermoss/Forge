@@ -5,28 +5,32 @@ class Draggable:
         self.window = window
         self.center = center
 
-        self.grab_pos = math.Vec2(0, 0)
+        self.grab_start = (0, 0)
+        self.grab = False
+        self.state = True
 
     def update(self, entity):
         if self.window.input.mouse_pressed(self.window.buttons["LEFT"]):
-            if entity.hit(self.window.input.mouse_pos()):
-                if not self.state:
-                    mouse_pos = self.window.input.mouse_pos()
-                    self.grab_pos.x, self.grab_pos.y = entity.x - mouse_pos.x, entity.y - mouse_pos.y
+            if self.state:
+                self.state = False
 
-                self.state = True
+                if entity.hit(self.window.input.mouse_pos()):
+                    self.grab = True
+                    self.grab_start = (entity.x - self.window.input.mouse_pos().x, entity.y - self.window.input.mouse_pos().y)
 
         else:
-            self.state = False
+            self.grab_start = (0, 0)
+            self.grab = False
+            self.state = True
 
-        if self.state:
-            mouse_pos = self.window.input.mouse_pos()
+        if self.grab:
+            mouse = self.window.input.mouse_pos()
 
             if self.center:
-                entity.x, entity.y = (mouse_pos.x - (entity.width / 2), mouse_pos.y - (entity.height / 2))
+                entity.x, entity.y = (mouse.x - (entity.width / 2), mouse.y - (entity.height / 2))
 
             else:
-                entity.x, entity.y = (mouse_pos.x + self.grab_pos.x, mouse_pos.y + self.grab_pos.y)
+                entity.x, entity.y = (mouse.x + self.grab_start[0], mouse.y + self.grab_start[1])
 
 if __name__ == "__main__":
     from aerforge import *

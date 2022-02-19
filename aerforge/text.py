@@ -4,8 +4,10 @@ from aerforge.color import *
 from aerforge.error import *
 
 class Text:
-    def __init__(self, window, text, font_size = 24, font_file = None, font_name = "arial", bold = False, italic = False, underline = False, color = Color(240, 240, 240), x = 0, y = 0, add_to_objects = True):
+    def __init__(self, window, text, font_size = 24, font_file = None, font_name = "arial", bold = False, italic = False, underline = False, color = Color(240, 240, 240), x = 0, y = 0, parent = None, add_to_objects = True):
         self.window = window
+
+        self.parent = parent
 
         self.x = x
         self.y = y
@@ -42,8 +44,16 @@ class Text:
     def draw(self):
         if not self.destroyed:
             if self.visible:
+                if self.parent != None:
+                    self.x += self.parent.x
+                    self.y += self.parent.y
+
                 rendered_text = self.font.render(self.text, True, self.color.get())
                 self.window.window.blit(rendered_text, (self.x, self.y))
+
+                if self.parent != None:
+                    self.x -= self.parent.x
+                    self.y -= self.parent.y
 
     def set_color(self, color):
         self.color = color

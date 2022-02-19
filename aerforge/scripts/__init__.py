@@ -4,3 +4,5 @@ from aerforge.scripts.smooth_follow_camera import SmoothFollowCamera
 from aerforge.scripts.follow_camera import FollowCamera
 from aerforge.scripts.draggable import Draggable
 from aerforge.scripts.tooltip import ToolTip
+from aerforge.scripts.modifiable import Modifiable
+from aerforge.scripts.double_click_handler import DoubleClickHandler

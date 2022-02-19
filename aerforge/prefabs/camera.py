@@ -1,30 +1,35 @@
 from aerforge import *
-from aerforge.math import *
 
 class Camera:
     def __init__(self, window):
         self.window = window
-
-        self.movement = (0, 0)
-        self.default = (0, 0)
-
-    def _set_pos(self, x, y):
-        for i in self.window.objects:
-            i.x = i.x - (x - (self.window.width / 2))
-            i.y = i.y - (y - (self.window.height / 2))
-
-        self.movement = (((x - (self.window.width / 2))), (y - (self.window.height / 2)))
-        self.default = (self.default[0] - self.movement[0], self.default[1] - self.movement[1])
+        self.pos = math.Vec2(0, 0)
+        self.ignored_entitys = []
 
     def set_pos(self, x, y):
-        self._set_pos(self.default[0] + x + (self.window.width / 2), self.default[1] + y + (self.window.height / 2))
+        x, y = int(x), int(y)
+
+        for i in self.window.objects:
+            if i not in self.ignored_entitys:
+                i.x += self.pos.x
+                i.y += self.pos.y
+
+        for i in self.window.objects:
+            if i not in self.ignored_entitys:
+                i.x -= x
+                i.y -= y
+
+        self.pos.x = x
+        self.pos.y = y
 
     def get_pos(self):
-        return Vec2(self.default[0], self.default[1])
-
-    def set_entity_pos(self, entity, x, y):
-        entity.x = x + self.default[0]
-        entity.y = y + self.default[1]
+        return self.pos
 
     def get_entity_pos(self, entity):
-        return Vec2(entity.x - self.default[0], entity.y - self.default[1])
+        return math.Vec2(self.pos.x + entity.x, self.pos.y + entity.y)
+
+    def set_entity_pos(self, entity, x, y):
+        entity.x, entity.y = x - self.pos.x, y - self.pos.y
+
+    def ignore(self, entity):
+        self.ignored_entitys.append(entity)

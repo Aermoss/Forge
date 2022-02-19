@@ -71,7 +71,6 @@ class TextBox(Entity):
         self.frame.width, self.frame.height = self.width, self.height
         text = self.text_renderer.font.render(self.text_renderer.text, True, self.text_renderer.color.get())
         self.text_renderer.x, self.text_renderer.y = self.x + self.width / 2 - text.get_width() / 2, self.y + self.height / 2 - text.get_height() / 2
-
         self.text_renderer.text = self.text
 
         if self.active:

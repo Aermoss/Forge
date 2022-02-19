@@ -117,6 +117,9 @@ class Forge:
         self.dt = 0
         self.clock.tick(self.fps)
 
+        if "setup" in self.functions:
+            self.functions["setup"]()
+
     def event(self, func):
         self.functions[func.__name__] = func
 
