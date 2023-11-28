@@ -1,12 +1,12 @@
-# AerForge
-A game engine made with pygame.
+# Forge Engine
+A simple 2D game engine written in Python with pygame.
 
 ## Getting Started
 1) Install Python
 2) Open cmd/terminal and type:
 
 ```
-pip install AerForge
+pip install aerforge
 ```
 
 ## Examples
