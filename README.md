@@ -36,7 +36,7 @@ class Rect(Entity):
             shape = shape.Rect,
             width = 20,
             height = 20,
-            x = 0,y = 0,
+            x = 0, y = 0,
             color = color.Color(0, 255, 255)
         )
 
