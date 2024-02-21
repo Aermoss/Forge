@@ -6,7 +6,7 @@ with open("README.md", "r", encoding = "UTF-8") as file:
 setup(
     name = "aerforge",
     version = "0.3.5",
-    description = "A game engine made with pygame.",
+    description = "A simple 2D game engine written in Python with pygame.",
     long_description = long_desc,
     long_description_content_type = "text/markdown",
     url = "https://github.com/Aermoss/Forge",
