@@ -9,7 +9,7 @@ setup(
     description = "A game engine made with pygame.",
     long_description = long_desc,
     long_description_content_type = "text/markdown",
-    url = "https://github.com/Aermoss/AerForge",
+    url = "https://github.com/Aermoss/Forge",
     author = "Yusuf Rencber",
     author_email = "yusufrencber546@gmail.com",
     license = "MIT",
