@@ -1,5 +1,5 @@
 # Forge Engine
-A simple 2D game engine written in Python with pygame.
+A simple 2D game engine written in Python with PyGame.
 
 ## Getting Started
 1) Install Python
