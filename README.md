@@ -11,7 +11,7 @@ pip install aerforge
 
 ## Examples
 # Creating a window
-``` python
+```python
 from aerforge import *
 
 forge = Forge()
@@ -24,7 +24,7 @@ forge.run()
 ```
 
 # Creating a rect
-``` python
+```python
 from aerforge import *
 
 forge = Forge()
